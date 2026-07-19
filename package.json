@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/AdrianPrendas/AdrianPrendas.github.io#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "nodemon": "^3.1.14"
   }
 }
