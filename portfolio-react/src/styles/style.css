@@ -1,0 +1,64 @@
+body{
+	background-color: #2B2D37;
+	color: white;
+	margin-bottom: 100px;
+	margin: 0;
+    padding: 0;
+    background: #1a1a1a;
+    height: 100vh;
+}
+
+#particles-js{
+	position:fixed;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    z-index:-1;
+}
+
+#overlay{
+	position: relative;
+	padding-top: 50px;
+}
+
+.parrafo{
+	font-size: 16px;
+}
+
+@media only screen and (max-width: 600px) {
+
+	
+
+}
+
+ /* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	#sudoku{width: 100%;}
+	#transactionsImg{width: 100%;}
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+	#sudoku{width: 80%;}
+	#transactionsImg{width: 80%;}
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+	#sudoku{width: 80%;}
+	#transactionsImg{width: 80%;}
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+	#sudoku{width: 70%;}
+	#transactionsImg{width: 70%;}
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+	#sudoku{width: 70%;}
+	#transactionsImg{width: 70%;}
+} 
+
