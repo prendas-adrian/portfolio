@@ -1,29 +1,23 @@
 {
-  "name": "adrianprendas.github.io",
-  "version": "1.0.0",
-  "description": "A personal web",
-  "main": "index.js",
+  "name": "portfolio-react",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "start": "nodemon index.js",
-    "test": "test",
-    "build": "mkdir build && cp -R animation css images js build/ && cp index.html index3.html build/",
-    "clean": "rm -r build"
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "oxlint",
+    "preview": "vite preview"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AdrianPrendas/AdrianPrendas.github.io.git"
-  },
-  "keywords": [
-    "personalpage"
-  ],
-  "author": "Adrian Prendas",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/AdrianPrendas/AdrianPrendas.github.io/issues"
-  },
-  "homepage": "https://github.com/AdrianPrendas/AdrianPrendas.github.io#readme",
   "dependencies": {
-    "express": "^4.16.4",
-    "nodemon": "^3.1.14"
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.4",
+    "oxlint": "^1.75.0",
+    "vite": "^8.2.0"
   }
 }
