@@ -1,16 +1,60 @@
-# React + Vite
+# Prendas Adrián · Personal Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Personal portfolio website showcasing my work as a software engineer.
 
-Currently, two official plugins are available:
+## Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Live site: [https://prendas-adrian.surge.sh](https://prendas-adrian.surge.sh)
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Single-page application with tab navigation: About Me, IT Solutions and Contact.
+- Animated particles background.
 
-## Expanding the Oxlint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+- [React 19](https://react.dev)
+- [Vite 8](https://vite.dev)
+- [oxlint](https://oxc.rs/docs/guide/usage/linter)
+- [Lightning CSS](https://lightningcss.dev)
+- Custom CSS (no UI frameworks)
+
+## Editing Content
+
+All the website content lives in a single file: `src/data/data.js`. There you can update:
+
+- Personal information (`personalInfo`)
+- Social links (`socialLinks`)
+- Offered solutions (`solutions`)
+- Projects (`projects`)
+- Skills (`skills`)
+- Navigation tabs (`tabs`)
+
+No component changes are needed to update the content.
+
+## Getting Started
+
+```bash
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
+
+# Run the linter
+npm run lint
+```
+
+## Deployment
+
+Generate the production build:
+
+```bash
+npm run build
+```
+
+The output is a static site in `dist/`, ready to be served by any static hosting provider.
+
+---
+
+&copy; 2026 Prendas Adrián. All rights reserved.
