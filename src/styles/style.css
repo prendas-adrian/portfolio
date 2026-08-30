@@ -60,5 +60,80 @@ body{
 @media only screen and (min-width: 1200px) {
 	#sudoku{width: 70%;}
 	#transactionsImg{width: 70%;}
-} 
+}
+
+/* Blog: los spans de los tokens de Prism no deben flotar a la derecha
+   (regla .work li span { float: right } de main.css los desalinea) */
+#blog .blog-content pre span {
+	float: none;
+}
+
+/* Blog: la columna de contenido ocupa el ancho completo */
+#blog .g2 {
+	width: 100%;
+	float: none;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+/* Blog: contenedor y botón de copiar por bloque de código */
+#blog .blog-content .code-block {
+	position: relative;
+	margin: .5em 0 1.5em;
+	max-width: 100%;
+}
+#blog .blog-content .code-block pre {
+	margin: 0;
+	max-width: 100%;
+	overflow-x: auto;
+	white-space: pre;
+	word-wrap: normal;
+	-webkit-overflow-scrolling: touch;
+}
+#blog .blog-content .copy-btn {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	z-index: 2;
+	padding: 4px 10px;
+	font-size: 12px;
+	line-height: 1;
+	font-family: 'Open Sans', sans-serif;
+	background: rgba(255,255,255,.12);
+	color: #ccc;
+	border: 1px solid rgba(255,255,255,.25);
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background 0.2s, color 0.2s;
+}
+#blog .blog-content .copy-btn:hover {
+	background: rgba(255,255,255,.25);
+	color: #fff;
+}
+
+/* Blog: headings del contenido responsive */
+#blog .blog-content h1 {
+	font-size: clamp(1.6rem, 5vw, 3.75em);
+	line-height: 1.2;
+}
+#blog .blog-content h2 {
+	font-size: clamp(1.4rem, 4vw, 3em);
+	line-height: 1.2;
+}
+#blog .blog-content h3 {
+	font-size: clamp(1.25rem, 3.5vw, 2.25em);
+	line-height: 1.25;
+}
+#blog .blog-content h4 {
+	font-size: clamp(1.1rem, 3vw, 1.5em);
+	line-height: 1.3;
+}
+#blog .blog-content h5 {
+	font-size: clamp(1rem, 2.5vw, 1.3125em);
+	line-height: 1.3;
+}
+#blog .blog-content h6 {
+	font-size: clamp(1rem, 2vw, 1.125em);
+	line-height: 1.3;
+}
 
