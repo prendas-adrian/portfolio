@@ -62,9 +62,10 @@ body{
 	#transactionsImg{width: 70%;}
 }
 
-/* Blog: los spans de los tokens de Prism no deben flotar a la derecha
-   (regla .work li span { float: right } de main.css los desalinea) */
-#blog .blog-content pre span {
+/* Blog: los spans no deben flotar a la derecha
+   (la regla .work li span { float: right } de main.css desalinea
+   los tokens de Prism y los spans de KaTeX) */
+#blog .blog-content span {
 	float: none;
 }
 
@@ -74,6 +75,36 @@ body{
 	float: none;
 	margin-left: 0;
 	margin-right: 0;
+}
+
+/* Blog: tablas (GFM) */
+#blog .blog-content table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 1.5em;
+	font-size: .95em;
+}
+#blog .blog-content th,
+#blog .blog-content td {
+	border: 1px solid #ddd;
+	padding: 8px 12px;
+	text-align: left;
+}
+#blog .blog-content thead th {
+	background: #fafafa;
+	color: #333;
+	font-weight: bold;
+}
+#blog .blog-content table tbody tr:nth-child(even) {
+	background: #fafafa;
+}
+
+/* Blog: fórmulas (KaTeX) */
+#blog .blog-content .katex-display {
+	margin: 1em 0;
+	overflow-x: auto;
+	overflow-y: hidden;
+	padding: .25em 0;
 }
 
 /* Blog: contenedor y botón de copiar por bloque de código */
@@ -135,5 +166,22 @@ body{
 #blog .blog-content h6 {
 	font-size: clamp(1rem, 2vw, 1.125em);
 	line-height: 1.3;
+}
+
+/* Blog: listas anidadas — marcador correcto y alineado al texto */
+#blog .blog-content ul,
+#blog .blog-content ol {
+	list-style-position: outside;
+	padding-left: 2em;
+}
+#blog .blog-content li p {
+	clear: none;
+	margin-bottom: .4em;
+}
+#blog .blog-content li li::marker {
+	content: "•";
+}
+#blog .blog-content li p:last-child {
+	margin-bottom: .4em;
 }
 
