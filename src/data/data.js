@@ -207,5 +207,6 @@ export const skills = {
 export const tabs = [
   { id: "about", label: "About Me", icon: "/images/businessman.svg" },
   { id: "itsolutions", label: "It Solutions", icon: "/images/solutions.svg" },
+  { id: "blog", label: "Blog", icon: "/images/blog.svg" },
   { id: "contact", label: "Contact", icon: "/images/contact.svg" },
 ];
