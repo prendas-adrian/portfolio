@@ -68,6 +68,14 @@ body{
 	float: none;
 }
 
+/* Blog: la columna de contenido ocupa el ancho completo */
+#blog .g2 {
+	width: 100%;
+	float: none;
+	margin-left: 0;
+	margin-right: 0;
+}
+
 /* Blog: contenedor y botón de copiar por bloque de código */
 #blog .blog-content .code-block {
 	position: relative;
