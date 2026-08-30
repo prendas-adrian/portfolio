@@ -1,61 +1,59 @@
 # Brute force
 
-Brute force (fuerza bruta) es una técnica de ataque o de búsqueda que consiste en probar todas las combinaciones posibles de elementos hasta encontrar la solución buscada. En seguridad informática se aplica, por ejemplo, para adivinar contraseñas, claves criptográficas o llaves de cifrado mediante intentos repetidos y sistemáticos.
+Brute force is an attack or search technique that consists of testing every possible combination of elements until finding the sought solution. In computer security it is applied, for example, to guess passwords, cryptographic keys, or encryption keys through repeated and systematic attempts.
 
-## ¿Cómo funciona?
+## How it works
 
-El principio es simple: dada una longitud máxima y un conjunto de caracteres (alfabeto), se generan y se prueban todas las cadenas posibles hasta que una coincide con el objetivo. Si el alfabeto tiene tamaño $A$ y la longitud de la clave es $L$, el número de combinaciones posibles es aproximadamente $A^L$. Esto crece exponencialmente con la longitud, por lo que el coste computacional se dispara cuando aumentan $A$ o $L$.
+The principle is simple: given a maximum length and a set of characters (alphabet), every possible string is generated and tested until one matches the target. If the alphabet has size $A$ and the key length is $L$, the number of possible combinations is approximately $A^L$. This grows exponentially with length, so the computational cost skyrockets when $A$ or $L$ increase.
 
-Ejemplo: para contraseñas formadas solo por letras minúsculas ($A=26$) y longitud $L=8$, hay $26^8\approx 2{,}09\times10^{11}$ combinaciones.
+Example: for passwords made only of lowercase letters ($A=26$) and length $L=8$, there are $26^8\approx 2{,}09\times10^{11}$ combinations.
 
-## Tipos de ataques relacionados
+## Related attack types
 
-- Fuerza bruta pura: prueba exhaustiva de todas las combinaciones posibles.
-- Ataque por diccionario: prueba palabras y frases comunes (más eficiente si la contraseña es humana).
-- Ataque híbrido: combinación de diccionario con variaciones (sustituciones, sufijos, prefijos).
-- Ataque por búsqueda de claves criptográficas: intenta todas las claves hasta descifrar un mensaje.
+- Pure brute force: exhaustive testing of every possible combination.
+- Dictionary attack: tries common words and phrases (more efficient if the password is human-chosen).
+- Hybrid attack: combination of a dictionary with variations (substitutions, suffixes, prefixes).
+- Cryptographic key search attack: tries every key until a message is decrypted.
 
-## Ventajas y limitaciones
+## Advantages and limitations
 
-- Ventaja: si hay tiempo y recursos suficientes, garantiza encontrar la clave (si existe dentro del espacio buscado).
-- Limitación: coste exponencial. Para espacios grandes puede ser totalmente impracticable.
-- Limitación práctica: ataques online (contra un servicio) suelen verse frenados por límites de velocidad, bloqueos y captchas.
+- Advantage: given enough time and resources, it guarantees finding the key (if it exists within the searched space).
+- Limitation: exponential cost. For large spaces it can be completely impractical.
+- Practical limitation: online attacks (against a service) are usually hindered by rate limits, blockouts, and captchas.
 
-## Mitigaciones y buenas prácticas
+## Mitigations and best practices
 
-Para reducir la eficacia de los ataques de fuerza bruta se recomiendan varias defensas combinadas:
+To reduce the effectiveness of brute force attacks, several combined defenses are recommended:
 
-- Contraseñas largas y aleatorias: aumentar $L$ y usar un alfabeto grande incrementa $A^L$ y hace inviable el ataque.
-- Hashing y salting: almacenar solo hashes con sal (y con funciones resistentes a GPU como bcrypt, scrypt o Argon2).
-- Rate limiting y bloqueos temporales: limitar intentos fallidos por cuenta o IP.
-- Autenticación multifactor (MFA): añade una barrera adicional que la contraseña sola no puede superar.
-- Key stretching: aplicar iteraciones costosas para ralentizar la verificación de contraseñas.
+- Long, random passwords: increasing $L$ and using a large alphabet raises $A^L$ and makes the attack unfeasible.
+- Hashing and salting: store only salted hashes (with GPU-resistant functions such as bcrypt, scrypt, or Argon2).
+- Rate limiting and temporary blockouts: limit failed attempts per account or IP.
+- Multi-factor authentication (MFA): adds an extra barrier that a password alone cannot overcome.
+- Key stretching: apply expensive iterations to slow down password verification.
 
-## Ejemplo de estimación de tiempo
+## Time estimation example
 
-Si un atacante puede probar $10^9$ (mil millones) de contraseñas por segundo en un ataque offline (suponiendo hardware especializado), una clave con $2\times10^{11}$ posibilidades tardaría aproximadamente $200$ segundos en recorrerse completamente en promedio. Sin embargo, ataques online típicos están limitados a muy pocos intentos por segundo, lo que vuelve la fuerza bruta impracticable en ese escenario.
+If an attacker can test $10^9$ (one billion) passwords per second in an offline attack (assuming specialized hardware), a key with $2\times10^{11}$ possibilities would take roughly $200$ seconds to be fully covered on average. However, typical online attacks are limited to very few attempts per second, which makes brute force impractical in that scenario.
 
-## Herramientas y ética
+## Tools and ethics
 
-Existen herramientas que automatizan ataques por fuerza bruta (por ejemplo, herramientas de auditoría de contraseñas o de recuperación de claves). Su uso sin autorización es ilegal y poco ético. En contextos de auditoría o pruebas de penetración autorizadas, las pruebas deben realizarse con permiso explícito, documentación y medidas para evitar afectar a terceros.
+There are tools that automate brute force attacks (for example, password auditing or key recovery tools). Using them without authorization is illegal and unethical. In authorized auditing or penetration testing contexts, tests must be carried out with explicit permission, documentation, and measures to avoid affecting third parties.
 
-## Conclusión
+## Conclusion
 
-La fuerza bruta es el método más directo y, en principio, infalible para encontrar una solución dentro de un espacio finito: prueba todas las posibilidades. Sin embargo, su utilidad real depende de la magnitud del espacio de búsqueda y de las restricciones prácticas (velocidad, coste y defensas del sistema). Buenas prácticas de seguridad (contraseñas largas y aleatorias, hashing con sal, MFA y límites de acceso) hacen que los ataques por fuerza bruta sean, en la práctica, poco eficaces.
+Brute force is the most direct method and, in principle, infallible for finding a solution within a finite space: it tests every possibility. However, its real usefulness depends on the magnitude of the search space and on practical constraints (speed, cost, and the system's defenses). Good security practices (long random passwords, salted hashing, MFA, and access limits) make brute force attacks, in practice, largely ineffective.
 
 ---
 
-Si quieres, puedo: añadir ejemplos de comandos de herramientas legales (solo para auditoría), traducir el archivo al inglés o integrarlo en el README.
+## Example in Python
 
-## Ejemplo en Python
-
-El siguiente ejemplo ilustra de forma didáctica cómo implementar un intento de fuerza bruta que prueba todas las combinaciones de un conjunto de caracteres hasta encontrar una cadena objetivo. Es solo con fines educativos y no debe usarse contra sistemas sin autorización.
+The following example didactically illustrates how to implement a brute force attempt that tests all combinations of a character set until finding a target string. It is for educational purposes only and must not be used against systems without authorization.
 
 ```python
 import itertools
 
 charset = list('abcdefghijklmnopqrstuvwxyz0123456789')
-target = 'a1b'   # cadena que queremos encontrar
+target = 'a1b'   # the string we want to find
 max_len = 3
 found = False
 
@@ -63,18 +61,18 @@ for length in range(1, max_len + 1):
 		for comb in itertools.product(charset, repeat=length):
 				attempt = ''.join(comb)
 				if attempt == target:
-						print(f"Encontrado: {attempt}")
+						print(f"Found: {attempt}")
 						found = True
 						break
 		if found:
 				break
 
 if not found:
-		print('No encontrado')
+		print('Not found')
 ```
 
-Notas:
+Notes:
 
-- `itertools.product` genera el producto cartesiano (todas las combinaciones con repetición) de `charset` con la longitud indicada.
-- Este script es didáctico y extremadamente ineficiente para espacios grandes; en la práctica se usan optimizaciones, diccionarios o técnicas específicas.
-- No uses este código contra servicios reales sin permiso explícito; su uso no autorizado es ilegal y poco ético.
+- `itertools.product` generates the cartesian product (all combinations with repetition) of `charset` with the given length.
+- This script is didactic and extremely inefficient for large spaces; in practice, optimizations, dictionaries, or specific techniques are used.
+- Do not use this code against real services without explicit permission; unauthorized use is illegal and unethical.

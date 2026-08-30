@@ -1,28 +1,28 @@
-# ¿Qué es la recursión?
+# What is recursion?
 
-La recursión es una técnica de programación en la que una función se llama a sí misma para resolver un problema.
+Recursion is a programming technique in which a function calls itself to solve a problem.
 
-## Idea principal
+## Main idea
 
-Cuando un problema puede dividirse en versiones más pequeñas del mismo problema, la recursión puede ser una solución clara y elegante.
+When a problem can be divided into smaller versions of the same problem, recursion can be a clear and elegant solution.
 
-## Ejemplo básico
+## Basic example
 
 ```ruby
-def cuenta_regresiva(n)
+def countdown(n)
   if n == 0
-    puts "Fin"
+    puts "End"
     return
   end
 
   puts n
-  cuenta_regresiva(n - 1)
+  countdown(n - 1)
 end
 
-cuenta_regresiva(5)
+countdown(5)
 ```
 
-### Salida
+### Output
 
 ```ruby
 5
@@ -30,20 +30,20 @@ cuenta_regresiva(5)
 3
 2
 1
-Fin
+End
 ```
 
-## Caso base
+## Base case
 
-El caso base es la condición que hace que la función termine. Sin este caso, la función se llamaría infinitamente y podría producir un error.
+The base case is the condition that makes the function terminate. Without it, the function would call itself forever and could produce an error.
 
 ```ruby
-def recursiva
-  recursiva
+def recursive
+  recursive
 end
 ```
 
-## Ejemplo con factorial
+## Factorial example
 
 ```ruby
 def factorial(n)
@@ -57,33 +57,33 @@ end
 puts factorial(5)
 ```
 
-### Resultado
+### Result
 
 ```ruby
 120
 ```
 
-## ¿Cuándo usarla?
+## When to use it?
 
-La recursión es útil para:
+Recursion is useful for:
 
-- árboles
-- listas enlazadas
-- algoritmos matemáticos
-- problemas que se pueden dividir en subproblemas más pequeños
+- trees
+- linked lists
+- mathematical algorithms
+- problems that can be divided into smaller subproblems
 
-## Ventajas
+## Advantages
 
-- Simplifica soluciones complejas.
-- Es útil en problemas jerárquicos.
-- Hace el código más legible en ciertos casos.
+- Simplifies complex solutions.
+- It is useful in hierarchical problems.
+- Makes the code more readable in certain cases.
 
-## Desventajas
+## Disadvantages
 
-- Puede consumir más memoria.
-- Si no se define bien el caso base, puede causar un bucle infinito.
-- A veces es menos eficiente que una solución iterativa.
+- It can consume more memory.
+- If the base case is not well defined, it can cause an infinite loop.
+- It is sometimes less efficient than an iterative solution.
 
-## En resumen
+## In summary
 
-La recursión es cuando una función se resuelve llamándose a sí misma con un problema más pequeño hasta llegar a una condición de parada. Es una herramienta muy útil, pero debe usarse con cuidado.
+Recursion is when a function solves itself by calling itself with a smaller problem until reaching a stopping condition. It is a very useful tool, but it must be used with care.

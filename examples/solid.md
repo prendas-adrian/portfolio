@@ -1,286 +1,286 @@
 # SOLID
 
-SOLID es un conjunto de cinco principios de diseño de software orientado a objetos. Su objetivo es ayudar a crear sistemas más claros, flexibles, fáciles de mantener y menos propensos a errores cuando el proyecto crece.
+SOLID is a set of five principles of object-oriented software design. Its goal is to help create clearer, more flexible, easier-to-maintain systems that are less prone to errors as the project grows.
 
-Fue popularizado por Robert C. Martin, conocido como Uncle Bob, y cada letra de la palabra SOLID representa un principio distinto:
+It was popularized by Robert C. Martin, also known as Uncle Bob, and each letter of the word SOLID represents a different principle:
 
-- S: Single Responsibility Principle (Principio de Responsabilidad Única)
-- O: Open/Closed Principle (Principio de Abierto/Cerrado)
-- L: Liskov Substitution Principle (Principio de Sustitución de Liskov)
-- I: Interface Segregation Principle (Principio de Segregación de Interfaces)
-- D: Dependency Inversion Principle (Principio de Inversión de Dependencias)
+- S: Single Responsibility Principle
+- O: Open/Closed Principle
+- L: Liskov Substitution Principle
+- I: Interface Segregation Principle
+- D: Dependency Inversion Principle
 
-La idea central es simple: si organizamos bien las responsabilidades y reducimos el acoplamiento entre componentes, el software será mucho más fácil de entender, probar y modificar.
+The central idea is simple: if we organize responsibilities well and reduce coupling between components, the software will be much easier to understand, test, and modify.
 
 ---
 
-## 1. Principio de Responsabilidad Única (SRP)
+## 1. Single Responsibility Principle (SRP)
 
-### Enunciado
-Una clase debe tener una sola razón para cambiar.
+### Statement
+A class should have only one reason to change.
 
-### Explicación
-Esto significa que una clase no debe encargarse de demasiadas cosas distintas. Si una clase hace varias tareas a la vez, cualquier cambio en una de ellas puede afectar a las demás.
+### Explanation
+This means that a class should not handle too many different things. If a class does several tasks at once, any change to one of them can affect the others.
 
-Por ejemplo, una clase que:
+For example, a class that:
 
-- valida usuarios,
-- guarda en base de datos,
-- envía correos,
-- genera archivos,
-- calcula estadísticas,
+- validates users,
+- saves to the database,
+- sends emails,
+- generates files,
+- computes statistics,
 
-está haciendo demasiadas cosas. En lugar de eso, conviene dividir esas responsabilidades en varias clases.
+is doing too many things. Instead, it is better to split those responsibilities across several classes.
 
-### Ejemplo
+### Example
 ```python
-class Usuario:
-    def __init__(self, nombre, email):
-        self.nombre = nombre
+class User:
+    def __init__(self, name, email):
+        self.name = name
         self.email = email
 
-class ServicioRegistro:
-    def registrar(self, usuario):
-        print(f"Registrando a {usuario.nombre}")
+class RegistrationService:
+    def register(self, user):
+        print(f"Registering {user.name}")
 
-class EnviadorEmail:
-    def enviar_bienvenida(self, usuario):
-        print(f"Correo enviado a {usuario.email}")
+class EmailSender:
+    def send_welcome(self, user):
+        print(f"Email sent to {user.email}")
 ```
 
-Cada clase tiene una responsabilidad clara.
+Each class has a clear responsibility.
 
-### Beneficios
-- código más legible,
-- menor acoplamiento,
-- cambios menos riesgosos,
-- pruebas más sencillas.
+### Benefits
+- more readable code,
+- less coupling,
+- less risky changes,
+- simpler tests.
 
 ---
 
-## 2. Principio de Abierto/Cerrado (OCP)
+## 2. Open/Closed Principle (OCP)
 
-### Enunciado
-Las entidades de software deben estar abiertas a la extensión, pero cerradas a la modificación.
+### Statement
+Software entities should be open for extension, but closed for modification.
 
-### Explicación
-Esto quiere decir que deberíamos poder agregar nuevas funcionalidades sin tener que cambiar el código ya existente y funcionando. En lugar de reescribir una clase cada vez que aparece un nuevo caso, se busca ampliar el comportamiento mediante nuevas implementaciones.
+### Explanation
+This means we should be able to add new functionality without changing already existing and working code. Instead of rewriting a class every time a new case appears, we aim to extend behavior through new implementations.
 
-### Ejemplo
+### Example
 ```python
-class ProcesadorPago:
-    def pagar(self, metodo, monto):
-        if metodo == "tarjeta":
-            print("Pago con tarjeta")
-        elif metodo == "efectivo":
-            print("Pago en efectivo")
+class PaymentProcessor:
+    def pay(self, method, amount):
+        if method == "card":
+            print("Pay by card")
+        elif method == "cash":
+            print("Pay by cash")
         else:
-            raise ValueError("Método no soportado")
+            raise ValueError("Unsupported method")
 ```
 
-Este enfoque falla cuando queremos agregar PayPal o transferencia bancaria, porque habría que modificar esta misma clase.
+This approach fails when we want to add PayPal or bank transfer, because we would have to modify this very class.
 
-Una mejor solución es usar abstracciones:
+A better solution is to use abstractions:
 
 ```python
-class MetodoPago:
-    def pagar(self, monto):
+class PaymentMethod:
+    def pay(self, amount):
         raise NotImplementedError
 
-class Tarjeta(MetodoPago):
-    def pagar(self, monto):
-        print(f"Pago con tarjeta: {monto}")
+class Card(PaymentMethod):
+    def pay(self, amount):
+        print(f"Pay by card: {amount}")
 
-class PayPal(MetodoPago):
-    def pagar(self, monto):
-        print(f"Pago con PayPal: {monto}")
+class PayPal(PaymentMethod):
+    def pay(self, amount):
+        print(f"Pay by PayPal: {amount}")
 ```
 
-Ahora puedes añadir nuevos métodos de pago sin tocar la lógica existente.
+Now you can add new payment methods without touching the existing logic.
 
-### Beneficios
-- reduce riesgos al modificar código viejo,
-- facilita la evolución del sistema,
-- mejora la reutilización.
+### Benefits
+- reduces risks when modifying old code,
+- eases system evolution,
+- improves reuse.
 
 ---
 
-## 3. Principio de Sustitución de Liskov (LSP)
+## 3. Liskov Substitution Principle (LSP)
 
-### Enunciado
-Los objetos de una clase base deben poder ser sustituidos por objetos de una clase derivada sin alterar la corrección del programa.
+### Statement
+Objects of a base class should be substitutable by objects of a derived class without altering the correctness of the program.
 
-### Explicación
-Si una clase hija hereda de otra, no debe romper el comportamiento esperado de la clase padre. En otras palabras, la subclase debe cumplir el contrato de la superclase.
+### Explanation
+If a child class inherits from another, it must not break the expected behavior of the parent class. In other words, the subclass must fulfill the superclass contract.
 
-### Ejemplo problemático
+### Problematic example
 ```python
-class Ave:
-    def volar(self):
+class Bird:
+    def fly(self):
         pass
 
-class Aguila(Ave):
-    def volar(self):
-        print("El águila vuela")
+class Eagle(Bird):
+    def fly(self):
+        print("The eagle flies")
 
-class Pinguino(Ave):
-    def volar(self):
-        raise Exception("Los pingüinos no pueden volar")
+class Penguin(Bird):
+    def fly(self):
+        raise Exception("Penguins cannot fly")
 ```
 
-Aquí `Pinguino` es una subclase de `Ave`, pero no puede cumplir la misma expectativa: la superclase dice que todas las aves vuelan, y eso no es cierto para los pingüinos.
+Here `Penguin` is a subclass of `Bird`, but it cannot fulfill the same expectation: the superclass says all birds fly, and that is not true for penguins.
 
-### Solución
-Diseñar correctamente la jerarquía de clases, separando conceptos que no son equivalentes.
+### Solution
+Design the class hierarchy correctly, separating concepts that are not equivalent.
 
 ```python
-class Ave:
+class Bird:
     pass
 
-class AveVoladora(Ave):
-    def volar(self):
+class FlyingBird(Bird):
+    def fly(self):
         pass
 
-class Aguila(AveVoladora):
-    def volar(self):
-        print("El águila vuela")
+class Eagle(FlyingBird):
+    def fly(self):
+        print("The eagle flies")
 
-class Pinguino(Ave):
+class Penguin(Bird):
     pass
 ```
 
-### Beneficios
-- mejora la coherencia del diseño,
-- reduce errores ocultos,
-- hace más seguro el uso de herencia.
+### Benefits
+- improves design coherence,
+- reduces hidden errors,
+- makes the use of inheritance safer.
 
 ---
 
-## 4. Principio de Segregación de Interfaces (ISP)
+## 4. Interface Segregation Principle (ISP)
 
-### Enunciado
-Un cliente no debe depender de interfaces que no usa.
+### Statement
+A client should not depend on interfaces it does not use.
 
-### Explicación
-Cuando una interfaz contiene demasiados métodos, las clases que la implementan se ven obligadas a definir cosas que no necesitan. Esto genera código innecesario, repetitivo y difícil de mantener.
+### Explanation
+When an interface contains too many methods, the classes that implement it are forced to define things they do not need. This generates unnecessary, repetitive, and hard-to-maintain code.
 
-### Ejemplo problemático
+### Problematic example
 ```python
-class DispositivoMultifuncional:
-    def imprimir(self):
+class MultifunctionDevice:
+    def print(self):
         pass
 
-    def escanear(self):
+    def scan(self):
         pass
 
-    def faxear(self):
+    def fax(self):
         pass
 ```
 
-Si una impresora solo puede imprimir, pero no escanear ni faxear, se ve obligada a implementar métodos que no necesita.
+If a printer can only print, but cannot scan or fax, it is forced to implement methods it does not need.
 
-### Solución
-Dividir interfaces en varias más pequeñas y específicas:
+### Solution
+Split interfaces into smaller, more specific ones:
 
 ```python
-class Impresora:
-    def imprimir(self):
+class Printer:
+    def print(self):
         pass
 
-class Escaner:
-    def escanear(self):
+class Scanner:
+    def scan(self):
         pass
 ```
 
-### Beneficios
-- menos código innecesario,
-- clases más cohesivas,
-- menor acoplamiento.
+### Benefits
+- less unnecessary code,
+- more cohesive classes,
+- less coupling.
 
 ---
 
-## 5. Principio de Inversión de Dependencias (DIP)
+## 5. Dependency Inversion Principle (DIP)
 
-### Enunciado
-Los módulos de alto nivel no deben depender de módulos de bajo nivel; ambos deben depender de abstracciones. Además, las abstracciones no deben depender de detalles; los detalles deben depender de las abstracciones.
+### Statement
+High-level modules should not depend on low-level modules; both should depend on abstractions. In addition, abstractions should not depend on details; details should depend on abstractions.
 
-### Explicación
-En vez de depender directamente de clases concretas, el código debe depender de interfaces o contratos abstractos. Así, puedes cambiar la implementación sin romper la lógica de negocio.
+### Explanation
+Instead of depending directly on concrete classes, the code should depend on interfaces or abstract contracts. This way, you can change the implementation without breaking business logic.
 
-### Ejemplo problemático
+### Problematic example
 ```python
-class BaseDatosMySQL:
-    def guardar(self, datos):
-        print("Guardando en MySQL")
+class MySQLDatabase:
+    def save(self, data):
+        print("Saving to MySQL")
 
-class ServicioUsuario:
+class UserService:
     def __init__(self):
-        self.base_datos = BaseDatosMySQL()
+        self.database = MySQLDatabase()
 
-    def registrar(self, usuario):
-        self.base_datos.guardar(usuario)
+    def register(self, user):
+        self.database.save(user)
 ```
 
-Esta clase depende directamente de MySQL. Si después quieres usar PostgreSQL o una base en memoria, tendrás que modificar el servicio.
+This class depends directly on MySQL. If later you want to use PostgreSQL or an in-memory database, you will have to modify the service.
 
-### Solución
+### Solution
 ```python
-class Repositorio:
-    def guardar(self, datos):
+class Repository:
+    def save(self, data):
         raise NotImplementedError
 
-class BaseDatosMySQL(Repositorio):
-    def guardar(self, datos):
-        print("Guardando en MySQL")
+class MySQLDatabase(Repository):
+    def save(self, data):
+        print("Saving to MySQL")
 
-class BaseDatosPostgres(Repositorio):
-    def guardar(self, datos):
-        print("Guardando en PostgreSQL")
+class PostgresDatabase(Repository):
+    def save(self, data):
+        print("Saving to PostgreSQL")
 
-class ServicioUsuario:
-    def __init__(self, repositorio: Repositorio):
-        self.repositorio = repositorio
+class UserService:
+    def __init__(self, repository: Repository):
+        self.repository = repository
 
-    def registrar(self, usuario):
-        self.repositorio.guardar(usuario)
+    def register(self, user):
+        self.repository.save(user)
 ```
 
-Ahora `ServicioUsuario` depende de una abstracción y no de una implementación concreta.
+Now `UserService` depends on an abstraction rather than on a concrete implementation.
 
-### Beneficios
-- menos acoplamiento,
-- más flexibilidad,
-- mejor testabilidad,
-- cambios de infraestructura más seguros.
-
----
-
-## ¿Por qué es importante SOLID?
-
-SOLID ayuda a crear software que sea:
-
-- más mantenible,
-- más fácil de entender,
-- más fácil de extender,
-- menos frágil ante cambios,
-- más seguro para refactorizar.
-
-Cuando un proyecto crece, sin principios claros, el código se vuelve difícil de modificar, se mezclan responsabilidades y aparecen errores difíciles de localizar.
+### Benefits
+- less coupling,
+- more flexibility,
+- better testability,
+- safer infrastructure changes.
 
 ---
 
-## Resumen rápido
+## Why is SOLID important?
 
-- SRP: una clase debe tener una sola responsabilidad.
-- OCP: abierto para extensión, cerrado para modificación.
-- LSP: la subclase debe respetar el contrato de la superclase.
-- ISP: no obligar a implementar métodos innecesarios.
-- DIP: depender de abstracciones, no de implementaciones concretas.
+SOLID helps create software that is:
+
+- more maintainable,
+- easier to understand,
+- easier to extend,
+- less fragile to changes,
+- safer to refactor.
+
+When a project grows, without clear principles, the code becomes hard to modify, responsibilities get mixed up, and errors that are difficult to locate appear.
 
 ---
 
-## En una frase
+## Quick summary
 
-SOLID no es solo un conjunto de reglas teóricas; es una guía para escribir software más limpio, más robusto y preparado para el cambio.
+- SRP: a class should have a single responsibility.
+- OCP: open for extension, closed for modification.
+- LSP: the subclass must respect the superclass contract.
+- ISP: do not force implementing unnecessary methods.
+- DIP: depend on abstractions, not on concrete implementations.
 
-Cuando se aplica bien, produce sistemas más profesionales, escalables y fáciles de mantener a largo plazo.
+---
+
+## In one sentence
+
+SOLID is not just a set of theoretical rules; it is a guide for writing cleaner, more robust software that is ready for change.
+
+When applied well, it produces more professional, scalable, and easier-to-maintain systems in the long run.

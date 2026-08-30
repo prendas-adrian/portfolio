@@ -1,108 +1,108 @@
-# Programación Orientada a Objetos (OOP)
+# Object-Oriented Programming (OOP)
 
-La Programación Orientada a Objetos (OOP, por sus siglas en inglés Object-Oriented Programming) es un paradigma de programación que organiza el software en piezas llamadas *objetos*. Cada objeto agrupa datos (atributos) y comportamientos (métodos) relacionados, modelando entidades del dominio real o conceptual. OOP facilita la modularidad, la reutilización y la mantenibilidad del código.
+Object-Oriented Programming (OOP) is a programming paradigm that organizes software into pieces called *objects*. Each object groups related data (attributes) and behaviors (methods), modeling entities of a real or conceptual domain. OOP facilitates modularity, reuse, and maintainability of code.
 
-## Conceptos básicos
+## Basic concepts
 
-- **Objeto**: instancia concreta que tiene estado y comportamiento. Ejemplo: un objeto `coche` con atributos `color`, `marca` y métodos `arrancar()` o `frenar()`.
-- **Clase**: plantilla o tipo que define la estructura (atributos) y comportamiento (métodos) de objetos similares. Una clase `Coche` describe qué propiedades y acciones tendrán todos los coches.
-- **Instancia**: un objeto creado a partir de una clase.
-- **Método**: función definida dentro de una clase que describe un comportamiento del objeto.
-- **Atributo**: dato almacenado en la instancia (por ejemplo, `velocidad`).
+- **Object**: a concrete instance that has state and behavior. Example: a `car` object with attributes `color`, `brand`, and methods `start()` or `brake()`.
+- **Class**: a template or type that defines the structure (attributes) and behavior (methods) of similar objects. A `Car` class describes what properties and actions all cars will have.
+- **Instance**: an object created from a class.
+- **Method**: a function defined inside a class that describes a behavior of the object.
+- **Attribute**: data stored in the instance (for example, `speed`).
 
-## Principios fundamentales (los 4 pilares)
+## Fundamental principles (the 4 pillars)
 
-1. **Encapsulamiento**
-   - Consiste en agrupar datos y métodos que operan sobre esos datos dentro de una unidad (la clase) y controlar el acceso a ellos.
-   - Permite ocultar la representación interna y exponer sólo una interfaz pública, reduciendo dependencias entre componentes.
-   - Ejemplo práctico: usar métodos `get()`/`set()` o propiedades en lugar de acceder directamente a atributos internos.
+1. **Encapsulation**
+   - It consists of grouping data and the methods that operate on that data within a unit (the class) and controlling access to them.
+   - It allows hiding the internal representation and exposing only a public interface, reducing dependencies between components.
+   - Practical example: use `get()`/`set()` methods or properties instead of accessing internal attributes directly.
 
-2. **Abstracción**
-   - Extraer lo esencial de una entidad, ignorando detalles irrelevantes para la tarea actual.
-   - Una clase representa una abstracción del mundo real: modela sólo lo necesario para resolver el problema.
+2. **Abstraction**
+   - It extracts the essential part of an entity, ignoring details irrelevant to the current task.
+   - A class represents an abstraction of the real world: it models only what is needed to solve the problem.
 
-3. **Herencia**
-   - Mecanismo para definir nuevas clases basadas en clases existentes, heredando atributos y métodos.
-   - Facilita la reutilización y la especialización (una clase `Vehículo` puede ser la base para `Coche` y `Motocicleta`).
-   - Hay que usarla con cuidado: abuso de la herencia puede generar jerarquías rígidas; muchas veces la composición es preferible.
+3. **Inheritance**
+   - A mechanism to define new classes based on existing classes, inheriting attributes and methods.
+   - It facilitates reuse and specialization (a `Vehicle` class can be the base for `Car` and `Motorcycle`).
+   - It must be used carefully: overusing inheritance can produce rigid hierarchies; often composition is preferable.
 
-4. **Polimorfismo**
-   - Permite usar una interfaz común para entidades diferentes. Por ejemplo, diferentes clases pueden implementar un método `dibujar()` y llamar a `dibujar()` sin conocer la clase concreta.
-   - Se manifiesta como sobrecarga, sobreescritura o a través de interfaces/contratos.
+4. **Polymorphism**
+   - It allows using a common interface for different entities. For example, different classes can implement a `draw()` method and call `draw()` without knowing the concrete class.
+   - It manifests as overloading, overriding, or through interfaces/contracts.
 
-## Otros conceptos importantes
+## Other important concepts
 
-- **Composición vs Herencia**: la composición consiste en construir clases usando instancias de otras clases ("tiene un"), mientras que la herencia es un "es un". Composición suele ser más flexible.
-- **Visibilidad / Modificadores de acceso**: `public`, `protected`, `private` (o convenciones en lenguajes como Python) controlan qué se puede usar desde fuera de la clase.
-- **Constructores y destructores**: métodos especiales para inicializar y limpiar una instancia.
-- **Interfaces / Clases abstractas**: contratos que definen métodos que las clases concretas deben implementar.
+- **Composition vs Inheritance**: composition consists of building classes using instances of other classes ("has a"), while inheritance is an "is a". Composition is usually more flexible.
+- **Visibility / Access modifiers**: `public`, `protected`, `private` (or conventions in languages like Python) control what can be used from outside the class.
+- **Constructors and destructors**: special methods to initialize and clean up an instance.
+- **Interfaces / Abstract classes**: contracts that define the methods concrete classes must implement.
 
-## Ejemplos (pseudocódigo / Python)
+## Examples (pseudocode / Python)
 
-Ejemplo sencillo con clases, herencia y polimorfismo:
+Simple example with classes, inheritance, and polymorphism:
 
 ```python
 class Animal:
-    def __init__(self, nombre):
-        self.nombre = nombre
+    def __init__(self, name):
+        self.name = name
 
-    def hablar(self):
+    def speak(self):
         raise NotImplementedError()
 
-class Perro(Animal):
-    def hablar(self):
-        return f"{self.nombre} dice: guau"
+class Dog(Animal):
+    def speak(self):
+        return f"{self.name} says: woof"
 
-class Gato(Animal):
-    def hablar(self):
-        return f"{self.nombre} dice: miau"
+class Cat(Animal):
+    def speak(self):
+        return f"{self.name} says: meow"
 
-def haz_hablar(animal: Animal):
-    print(animal.hablar())
+def make_speak(animal: Animal):
+    print(animal.speak())
 
-perro = Perro('Rex')
-gato = Gato('Misu')
-haz_hablar(perro)  # Rex dice: guau
-haz_hablar(gato)   # Misu dice: miau
+dog = Dog('Rex')
+cat = Cat('Misu')
+make_speak(dog)  # Rex says: woof
+make_speak(cat)  # Misu says: meow
 ```
 
-Este ejemplo muestra polimorfismo: `haz_hablar` funciona con cualquier `Animal` concretando su comportamiento según la clase real.
+This example shows polymorphism: `make_speak` works with any `Animal`, realizing its behavior according to the actual class.
 
-Composición vs Herencia (ejemplo rápido):
+Composition vs Inheritance (quick example):
 
 ```python
-class Motor:
-    def arrancar(self):
-        return 'Motor arrancado'
+class Engine:
+    def start(self):
+        return 'Engine started'
 
-class Coche:
+class Car:
     def __init__(self):
-        self.motor = Motor()  # composición: el coche tiene un motor
+        self.engine = Engine()  # composition: the car has an engine
 
-    def arrancar(self):
-        return self.motor.arrancar()
+    def start(self):
+        return self.engine.start()
 
-# Alternativa: Heredar de Motor (no recomendable semánticamente)
+# Alternative: Inherit from Engine (not recommended semantically)
 ```
 
-## Buenas prácticas y recomendaciones
+## Best practices and recommendations
 
-- Modela clases que representen conceptos con sentido en el dominio del problema — evita clases que acumulen responsabilidades (principio de responsabilidad única).
-- Prefiere composición sobre herencia cuando la relación es de "tiene un" en lugar de "es un".
-- Mantén la interfaz pública mínima necesaria (encapsulamiento).
-- Escribe pruebas unitarias para los comportamientos importantes de las clases.
-- Sigue principios SOLID para sistemas orientados a objetos grandes y mantenibles.
+- Model classes that represent meaningful concepts in the problem domain — avoid classes that accumulate responsibilities (single responsibility principle).
+- Prefer composition over inheritance when the relationship is "has a" instead of "is a".
+- Keep the public interface minimal (encapsulation).
+- Write unit tests for the important behaviors of the classes.
+- Follow SOLID principles for large, maintainable object-oriented systems.
 
-## ¿Cuándo usar OOP?
+## When to use OOP?
 
-- OOP es útil cuando el dominio del problema contiene entidades naturales que encajan bien en modelos con estado y comportamiento.
-- Para sistemas grandes y extensibles, OOP facilita organizar y dividir responsabilidades.
-- En programas muy matemáticos o de transformación de datos, otros paradigmas (funcional o procedimental) pueden ser más simples y adecuados.
+- OOP is useful when the problem domain contains natural entities that fit well into models with state and behavior.
+- For large, extensible systems, OOP makes it easier to organize and divide responsibilities.
+- In very mathematical programs or data transformation, other paradigms (functional or procedural) may be simpler and more suitable.
 
-## Resumen
+## Summary
 
-OOP es un paradigma centrado en objetos que agrupan datos y comportamiento, facilitando la modularidad, la reutilización y la mantenibilidad. Sus pilares —encapsulamiento, abstracción, herencia y polimorfismo— ofrecen herramientas para modelar sistemas complejos, pero deben usarse con criterio y buenas prácticas (por ejemplo, preferir composición cuando convenga).
+OOP is a paradigm centered on objects that group data and behavior, facilitating modularity, reuse, and maintainability. Its pillars —encapsulation, abstraction, inheritance, and polymorphism— offer tools for modeling complex systems, but they must be used with judgment and good practices (for example, preferring composition when it is convenient).
 
 ---
 
-Archivo creado por el equipo de documentación.
+Document created by the documentation team.

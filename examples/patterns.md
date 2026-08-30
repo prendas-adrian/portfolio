@@ -1,455 +1,455 @@
-# Patrones de diseño
+# Design Patterns
 
-## Introducción
+## Introduction
 
-Los patrones de diseño son soluciones probadas y reutilizables a problemas comunes que surgen durante el diseño de software. No son implementaciones concretas, sino descripciones y plantillas que guían cómo estructurar el código para resolver una clase de problemas: mejorar la mantenibilidad, la extensibilidad y la comunicación entre desarrolladores.
+Design patterns are proven, reusable solutions to common problems that arise during software design. They are not concrete implementations, but descriptions and templates that guide how to structure code to solve a class of problems: improving maintainability, extensibility, and communication among developers.
 
-## ¿Por qué usar patrones de diseño?
+## Why use design patterns?
 
-- Aceleran el diseño al proporcionar soluciones conocidas.
-- Mejoran la comunicación: "usa un patrón Singleton" dice mucho a otros desarrolladores.
-- Aumentan la calidad: favorecen la separación de responsabilidades y la reutilización.
-- Facilitan la evolución: muchos patrones favorecen la extensibilidad sin cambiar código existente.
+- They speed up design by providing known solutions.
+- They improve communication: "use a Singleton pattern" says a lot to other developers.
+- They increase quality: they favor separation of responsibilities and reuse.
+- They ease evolution: many patterns favor extensibility without changing existing code.
 
-## Componentes de un patrón
+## Components of a pattern
 
-- Nombre: facilita la referencia y la comunicación.
-- Intención: qué hace el patrón.
-- Problema: cuándo aplicarlo (contexto y fuerzas en conflicto).
-- Solución: estructura y relaciones entre elementos.
-- Consecuencias: ventajas, desventajas y costes.
-- Implementación: notas prácticas y posibles variantes.
+- Name: facilitates reference and communication.
+- Intent: what the pattern does.
+- Problem: when to apply it (context and conflicting forces).
+- Solution: structure and relationships between elements.
+- Consequences: advantages, disadvantages, and costs.
+- Implementation: practical notes and possible variants.
 
-## Clasificación principal
+## Main classification
 
-Los patrones se agrupan comúnmente en tres familias:
+Patterns are commonly grouped into three families:
 
-1. Patrones creacionales: relacionados con la creación de objetos.
-2. Patrones estructurales: cómo componer objetos y clases para formar estructuras mayores.
-3. Patrones comportamentales: cómo se comunican y colaboran los objetos.
+1. Creational patterns: related to object creation.
+2. Structural patterns: how to compose objects and classes into larger structures.
+3. Behavioral patterns: how objects communicate and collaborate.
 
-A continuación se resumen los patrones más conocidos de cada categoría y, para cada uno, un ejemplo breve de uso típico.
+Below the best-known patterns of each category are summarized, with a brief typical usage example for each.
 
 ---
 
-## Patrones Creacionales
+## Creational Patterns
 
 - **Singleton**
-  - Intención: asegurar que una clase tenga una única instancia accesible globalmente.
-  - Problema: recursos compartidos que deben existir una sola vez (configuración, pool, logger).
-  - Solución: ocultar el constructor y exponer un punto de acceso global que crea la instancia la primera vez.
-  - Consecuencias: fácil acceso global pero puede introducir acoplamiento y dificultar pruebas (mocking). Evitar su abuso.
-  - Ejemplo:
+  - Intent: ensure that a class has a single instance accessible globally.
+  - Problem: shared resources that must exist only once (configuration, pool, logger).
+  - Solution: hide the constructor and expose a global access point that creates the instance the first time.
+  - Consequences: easy global access but it can introduce coupling and hinder testing (mocking). Avoid overusing it.
+  - Example:
 
     ```python
-    class Configuracion:
-        _instancia = None
+    class Config:
+        _instance = None
 
         def __new__(cls):
-            if cls._instancia is None:
-                cls._instancia = super().__new__(cls)
-                cls._instancia.tempo = "UTC"
-            return cls._instancia
+            if cls._instance is None:
+                cls._instance = super().__new__(cls)
+                cls._instance.timezone = "UTC"
+            return cls._instance
 
-    c1 = Configuracion()
-    c2 = Configuracion()
+    c1 = Config()
+    c2 = Config()
     assert c1 is c2
     ```
 
 - **Factory Method**
-  - Intención: delegar la creación de objetos a subclases.
-  - Problema: cuando una clase no sabe exactamente qué subclase necesita crear.
-  - Solución: definir un método fábrica que devuelva un producto, y permitir que subclases lo sobreescriban.
-  - Consecuencias: mejora la extensibilidad y desacopla al cliente de clases concretas.
-  - Ejemplo:
+  - Intent: delegate object creation to subclasses.
+  - Problem: when a class does not know exactly which subclass it needs to create.
+  - Solution: define a factory method that returns a product, and let subclasses override it.
+  - Consequences: improves extensibility and decouples the client from concrete classes.
+  - Example:
 
     ```python
-    class Documento:
-        def guardar(self):
+    class Document:
+        def save(self):
             pass
 
-    class PDF(Documento):
-        def guardar(self):
-            print("Guardando PDF")
+    class PDF(Document):
+        def save(self):
+            print("Saving PDF")
 
-    class Word(Documento):
-        def guardar(self):
-            print("Guardando Word")
+    class Word(Document):
+        def save(self):
+            print("Saving Word")
 
-    class FabricaDocumentos:
-        def crear(self, tipo):
-            return PDF() if tipo == "pdf" else Word()
+    class DocumentFactory:
+        def create(self, kind):
+            return PDF() if kind == "pdf" else Word()
 
-    documento = FabricaDocumentos().crear("pdf")
-    documento.guardar()
+    document = DocumentFactory().create("pdf")
+    document.save()
     ```
 
 - **Abstract Factory**
-  - Intención: proporcionar una interfaz para crear familias de objetos relacionados sin especificar sus clases concretas.
-  - Problema: cuando los productos deben ser usados en conjunto y variantes paralelas deben mantenerse.
-  - Solución: un objeto fábrica que crea cada tipo de producto de la familia.
-  - Ejemplo:
+  - Intent: provide an interface for creating families of related objects without specifying their concrete classes.
+  - Problem: when products must be used together and parallel variants must be kept.
+  - Solution: a factory object that creates each product type of the family.
+  - Example:
 
     ```python
-    class Boton:
-        def pintar(self): pass
+    class Button:
+        def paint(self): pass
 
-    class Ventana:
+    class Window:
         def render(self): pass
 
-    class BotonWindows(Boton):
-        def pintar(self): print("Botón Windows")
+    class WindowsButton(Button):
+        def paint(self): print("Windows Button")
 
-    class VentanaWindows(Ventana):
-        def render(self): print("Ventana Windows")
+    class WindowsWindow(Window):
+        def render(self): print("Windows Window")
 
-    class FabricaWindows:
-        def crear_boton(self): return BotonWindows()
-        def crear_ventana(self): return VentanaWindows()
+    class WindowsFactory:
+        def create_button(self): return WindowsButton()
+        def create_window(self): return WindowsWindow()
     ```
 
 - **Builder**
-  - Intención: separar la construcción de un objeto complejo de su representación, de modo que el mismo proceso de construcción pueda crear representaciones diferentes.
-  - Problema: construcción de objetos con muchos parámetros o pasos opcionales.
-  - Solución: usar un `Builder` que proporciona una API fluida para configurar y finalmente construir el objeto.
-  - Ejemplo:
+  - Intent: separate the construction of a complex object from its representation, so that the same construction process can create different representations.
+  - Problem: construction of objects with many parameters or optional steps.
+  - Solution: use a `Builder` that provides a fluent API to configure and finally build the object.
+  - Example:
 
     ```python
-    class Pedido:
+    class Order:
         def __init__(self):
             self.items = []
-            self.envio = None
+            self.shipping = None
 
-    class PedidoBuilder:
+    class OrderBuilder:
         def __init__(self):
-            self.pedido = Pedido()
+            self.order = Order()
 
-        def agregar_item(self, item):
-            self.pedido.items.append(item)
+        def add_item(self, item):
+            self.order.items.append(item)
             return self
 
-        def con_envio(self, envio):
-            self.pedido.envio = envio
+        def with_shipping(self, shipping):
+            self.order.shipping = shipping
             return self
 
         def build(self):
-            return self.pedido
+            return self.order
 
-    pedido = PedidoBuilder().agregar_item("Libro").con_envio("Urgente").build()
+    order = OrderBuilder().add_item("Book").with_shipping("Urgent").build()
     ```
 
 - **Prototype**
-  - Intención: crear nuevos objetos copiando un prototipo existente.
-  - Problema: creación costosa o compleja de nuevos objetos; prefieres clonar.
-  - Solución: mantener prototipos y clonarlos cuando se necesite un nuevo objeto.
-  - Ejemplo:
+  - Intent: create new objects by copying an existing prototype.
+  - Problem: costly or complex creation of new objects; you prefer to clone.
+  - Solution: keep prototypes and clone them when a new object is needed.
+  - Example:
 
     ```python
     import copy
 
-    class Usuario:
-        def __init__(self, nombre, rol):
-            self.nombre = nombre
-            self.rol = rol
+    class User:
+        def __init__(self, name, role):
+            self.name = name
+            self.role = role
 
         def clone(self):
             return copy.deepcopy(self)
 
-    admin = Usuario("Ana", "admin")
+    admin = User("Ana", "admin")
     editor = admin.clone()
-    editor.rol = "editor"
+    editor.role = "editor"
     ```
 
 ---
 
-## Patrones Estructurales
+## Structural Patterns
 
 - **Adapter**
-  - Intención: convertir la interfaz de una clase a otra que espera el cliente.
-  - Problema: integrar código con interfaces incompatibles.
-  - Solución: crear una capa adaptadora que delegue llamadas al objeto existente transformando interfaces.
-  - Ejemplo:
+  - Intent: convert the interface of a class to another that the client expects.
+  - Problem: integrating code with incompatible interfaces.
+  - Solution: create an adapter layer that delegates calls to the existing object transforming interfaces.
+  - Example:
 
     ```python
-    class EnchufeEuropeo:
-        def conectar(self):
-            print("Conectado a 220V")
+    class EuropeanOutlet:
+        def connect(self):
+            print("Connected to 220V")
 
-    class EnchufeAmericano:
+    class AmericanOutlet:
         def plug(self):
-            print("Conectado a 110V")
+            print("Connected to 110V")
 
-    class Adaptador(EnchufeAmericano):
-        def __init__(self, enchufe):
-            self.enchufe = enchufe
+    class Adapter(AmericanOutlet):
+        def __init__(self, outlet):
+            self.outlet = outlet
 
         def plug(self):
-            self.enchufe.conectar()
+            self.outlet.connect()
     ```
 
 - **Decorator**
-  - Intención: añadir responsabilidades a un objeto de forma dinámica.
-  - Problema: evitar explosión de subclases para combinar funcionalidades.
-  - Solución: envolver el objeto con decoradores que implementan la misma interfaz y añaden comportamiento.
-  - Ejemplo:
+  - Intent: add responsibilities to an object dynamically.
+  - Problem: avoid an explosion of subclasses to combine functionalities.
+  - Solution: wrap the object with decorators that implement the same interface and add behavior.
+  - Example:
 
     ```python
-    class Cafe:
-        def costo(self):
+    class Coffee:
+        def cost(self):
             return 10
 
-    class LecheDecorator:
-        def __init__(self, cafe):
-            self.cafe = cafe
+    class MilkDecorator:
+        def __init__(self, coffee):
+            self.coffee = coffee
 
-        def costo(self):
-            return self.cafe.costo() + 2
+        def cost(self):
+            return self.coffee.cost() + 2
     ```
 
 - **Facade**
-  - Intención: proporcionar una interfaz simplificada a un subsistema complejo.
-  - Problema: clientes que necesitan usar un subsistema extenso con muchas clases.
-  - Solución: crear una fachada que orquesta llamadas internas reduciendo la complejidad visible.
-  - Ejemplo:
+  - Intent: provide a simplified interface to a complex subsystem.
+  - Problem: clients that need to use an extensive subsystem with many classes.
+  - Solution: create a facade that orchestrates internal calls, reducing the visible complexity.
+  - Example:
 
     ```python
-    class CargaVideo:
-        def cargar(self, url): print(f"Cargando {url}")
+    class VideoLoader:
+        def load(self, url): print(f"Loading {url}")
 
     class Decoder:
-        def decode(self): print("Decodificando video")
+        def decode(self): print("Decoding video")
 
-    class ReproductorFacade:
+    class PlayerFacade:
         def __init__(self):
-            self.carga = CargaVideo()
+            self.loader = VideoLoader()
             self.decoder = Decoder()
 
-        def reproducir(self, url):
-            self.carga.cargar(url)
+        def play(self, url):
+            self.loader.load(url)
             self.decoder.decode()
     ```
 
 - **Proxy**
-  - Intención: proporcionar un sustituto o representante de otro objeto para controlar el acceso.
-  - Problema: controlar acceso, añadir caché, lazy-loading, o protección.
-  - Solución: proxy que implementa la misma interfaz y delega con control adicional.
-  - Ejemplo:
+  - Intent: provide a substitute or representative for another object to control access.
+  - Problem: controlling access, adding caching, lazy loading, or protection.
+  - Solution: a proxy that implements the same interface and delegates with added control.
+  - Example:
 
     ```python
-    class Imagen:
-        def __init__(self, nombre):
-            self.nombre = nombre
+    class Image:
+        def __init__(self, name):
+            self.name = name
 
-    class ImagenProxy:
-        def __init__(self, nombre):
-            self.nombre = nombre
-            self._imagen = None
+    class ImageProxy:
+        def __init__(self, name):
+            self.name = name
+            self._image = None
 
-        def mostrar(self):
-            if self._imagen is None:
-                self._imagen = Imagen(self.nombre)
-            print(f"Mostrando imagen: {self.nombre}")
+        def show(self):
+            if self._image is None:
+                self._image = Image(self.name)
+            print(f"Showing image: {self.name}")
     ```
 
 - **Composite**
-  - Intención: componer objetos en estructuras jerárquicas para representar jerarquías parte-todo.
-  - Problema: tratar objetos individuales y compuestos de forma uniforme.
-  - Solución: definir una interfaz común para componentes y contenedores que contienen componentes.
-  - Ejemplo:
+  - Intent: compose objects into hierarchical structures to represent part-whole hierarchies.
+  - Problem: treating individual and composite objects uniformly.
+  - Solution: define a common interface for components and containers that hold components.
+  - Example:
 
     ```python
-    class Archivo:
-        def __init__(self, nombre):
-            self.nombre = nombre
+    class File:
+        def __init__(self, name):
+            self.name = name
 
-    class Carpeta:
-        def __init__(self, nombre):
-            self.nombre = nombre
+    class Folder:
+        def __init__(self, name):
+            self.name = name
             self.children = []
 
-        def agregar(self, item):
+        def add(self, item):
             self.children.append(item)
     ```
 
 ---
 
-## Patrones Comportamentales
+## Behavioral Patterns
 
 - **Strategy**
-  - Intención: definir una familia de algoritmos, encapsular cada uno y hacerlos intercambiables.
-  - Problema: seleccionar algoritmo en tiempo de ejecución sin condicionales extensos.
-  - Solución: encapsular algoritmos en clases y delegar la elección a un contexto.
-  - Ejemplo:
+  - Intent: define a family of algorithms, encapsulate each one, and make them interchangeable.
+  - Problem: selecting an algorithm at runtime without extensive conditionals.
+  - Solution: encapsulate algorithms in classes and delegate the choice to a context.
+  - Example:
 
     ```python
-    class Descuento:
-        def aplicar(self, total):
+    class Discount:
+        def apply(self, total):
             return total
 
-    class DescuentoVIP(Descuento):
-        def aplicar(self, total):
+    class VIPDiscount(Discount):
+        def apply(self, total):
             return total * 0.9
 
-    class Carrito:
-        def __init__(self, estrategia):
-            self.estrategia = estrategia
+    class Cart:
+        def __init__(self, strategy):
+            self.strategy = strategy
 
-        def total(self, monto):
-            return self.estrategia.aplicar(monto)
+        def total(self, amount):
+            return self.strategy.apply(amount)
     ```
 
 - **Observer**
-  - Intención: definir una dependencia uno-a-muchos entre objetos para notificar cambios.
-  - Problema: actualizar múltiples dependientes cuando un objeto cambia de estado.
-  - Solución: sujeto que mantiene una lista de observadores y notifica a todos cuando cambia.
-  - Ejemplo:
+  - Intent: define a one-to-many dependency between objects to notify changes.
+  - Problem: updating multiple dependents when an object changes state.
+  - Solution: a subject that keeps a list of observers and notifies all of them when it changes.
+  - Example:
 
     ```python
     class Blog:
         def __init__(self):
-            self.subscriptores = []
+            self.subscribers = []
 
-        def suscribir(self, obs):
-            self.subscriptores.append(obs)
+        def subscribe(self, obs):
+            self.subscribers.append(obs)
 
-        def publicar(self, mensaje):
-            for obs in self.subscriptores:
-                obs.actualizar(mensaje)
+        def publish(self, message):
+            for obs in self.subscribers:
+                obs.update(message)
     ```
 
 - **Command**
-  - Intención: encapsular una petición como un objeto, permitiendo parametrizar clientes con distintas solicitudes.
-  - Problema: necesidad de colas, registros de operaciones, deshacer/rehacer.
-  - Solución: crear objetos comando con `execute()` y, opcionalmente, `undo()`.
-  - Ejemplo:
+  - Intent: encapsulate a request as an object, allowing clients to be parameterized with different requests.
+  - Problem: need for queues, operation logs, undo/redo.
+  - Solution: create command objects with `execute()` and, optionally, `undo()`.
+  - Example:
 
     ```python
-    class EncenderLuz:
+    class TurnOnLight:
         def execute(self):
-            print("Luz encendida")
+            print("Light on")
 
-    class Boton:
-        def __init__(self, comando):
-            self.comando = comando
+    class Button:
+        def __init__(self, command):
+            self.command = command
 
-        def pulsar(self):
-            self.comando.execute()
+        def press(self):
+            self.command.execute()
     ```
 
 - **Iterator**
-  - Intención: proporcionar una forma estándar de recorrer elementos de una colección sin exponer su representación.
-  - Problema: múltiples colecciones con diferentes implementaciones de acceso.
-  - Solución: definir un iterador con operaciones `hasNext()` / `next()`.
-  - Ejemplo:
+  - Intent: provide a standard way to traverse the elements of a collection without exposing its representation.
+  - Problem: multiple collections with different access implementations.
+  - Solution: define an iterator with `hasNext()` / `next()` operations.
+  - Example:
 
     ```python
-    class Iterador:
-        def __init__(self, elementos):
-            self.elementos = elementos
-            self.indice = 0
+    class Iterator:
+        def __init__(self, elements):
+            self.elements = elements
+            self.index = 0
 
         def __iter__(self):
             return self
 
         def __next__(self):
-            if self.indice >= len(self.elementos):
+            if self.index >= len(self.elements):
                 raise StopIteration
-            valor = self.elementos[self.indice]
-            self.indice += 1
-            return valor
+            value = self.elements[self.index]
+            self.index += 1
+            return value
     ```
 
 - **State**
-  - Intención: permitir que un objeto cambie su comportamiento cuando su estado interno cambia.
-  - Problema: grandes estructuras condicionales basadas en el estado.
-  - Solución: extraer comportamientos en objetos de estado y delegar la lógica.
-  - Ejemplo:
+  - Intent: allow an object to change its behavior when its internal state changes.
+  - Problem: large conditional structures based on state.
+  - Solution: extract behaviors into state objects and delegate the logic.
+  - Example:
 
     ```python
-    class EstadoPedido:
-        def siguiente(self, pedido):
+    class OrderState:
+        def next(self, order):
             pass
 
-    class PedidoPendiente(EstadoPedido):
-        def siguiente(self, pedido):
-            print("Pedido pendiente")
+    class PendingOrder(OrderState):
+        def next(self, order):
+            print("Pending order")
 
-    class PedidoEnviado(EstadoPedido):
-        def siguiente(self, pedido):
-            print("Pedido enviado")
+    class ShippedOrder(OrderState):
+        def next(self, order):
+            print("Shipped order")
     ```
 
 - **Template Method**
-  - Intención: definir el esqueleto de un algoritmo en una operación, deferir algunos pasos a subclases.
-  - Problema: compartir estructura de algoritmo pero permitir variaciones en pasos concretos.
-  - Solución: método plantilla en clase base que llama a pasos abstractos/definidos.
-  - Ejemplo:
+  - Intent: define the skeleton of an algorithm in an operation, deferring some steps to subclasses.
+  - Problem: sharing the algorithm structure but allowing variations in concrete steps.
+  - Solution: a template method in the base class that calls abstract/defined steps.
+  - Example:
 
     ```python
-    class Exportador:
-        def exportar(self):
-            datos = self.obtener_datos()
-            return self.formatear(datos)
+    class Exporter:
+        def export(self):
+            data = self.get_data()
+            return self.format(data)
 
-        def obtener_datos(self):
+        def get_data(self):
             raise NotImplementedError
 
-        def formatear(self, datos):
-            return datos
+        def format(self, data):
+            return data
     ```
 
 - **Mediator**
-  - Intención: encapsular cómo interactúan un conjunto de objetos, moviendo la comunicación a un mediador.
-  - Problema: objetos fuertemente acoplados por llamadas directas entre sí.
-  - Solución: centralizar la comunicación en un mediator que coordina.
-  - Ejemplo:
+  - Intent: encapsulate how a set of objects interact, moving communication to a mediator.
+  - Problem: objects strongly coupled by direct calls among themselves.
+  - Solution: centralize communication in a mediator that coordinates.
+  - Example:
 
     ```python
     class ChatMediator:
         def __init__(self):
-            self.usuarios = []
+            self.users = []
 
-        def registrar(self, usuario):
-            self.usuarios.append(usuario)
+        def register(self, user):
+            self.users.append(user)
 
-        def enviar(self, remitente, mensaje):
-            for usuario in self.usuarios:
-                if usuario != remitente:
-                    usuario.recibir(mensaje)
+        def send(self, sender, message):
+            for user in self.users:
+                if user != sender:
+                    user.receive(message)
     ```
 
 ---
 
-## Cómo aplicar patrones correctamente
+## How to apply patterns correctly
 
-1. Entender el problema: los patrones no son soluciones universales.
-2. Evitar sobreingeniería: no introducir patrones si una solución simple basta.
-3. Priorizar claridad: usa nombres y estructura que faciliten comprender la intención.
-4. Documentar la elección: explica por qué se usa un patrón concreto.
-5. Escribir tests: muchos patrones mejoran testabilidad pero hay que confirmarlo.
+1. Understand the problem: patterns are not universal solutions.
+2. Avoid over-engineering: do not introduce patterns if a simple solution suffices.
+3. Prioritize clarity: use names and structure that make the intent easy to understand.
+4. Document the choice: explain why a specific pattern is used.
+5. Write tests: many patterns improve testability but it must be confirmed.
 
-## Ejemplo breve (Factory Method)
+## Brief example (Factory Method)
 
 ```pseudo
-interface Creador {
-  crearProducto(): Producto
+interface Creator {
+  createProduct(): Product
 }
 
-class CreadorConcretoA implements Creador {
-  crearProducto() => new ProductoConcretoA()
+class ConcreteCreatorA implements Creator {
+  createProduct() => new ConcreteProductA()
 }
 
-class Cliente {
-  constructor(creador: Creador)
-  usar() {
-    p = creador.crearProducto()
-    p.operar()
+class Client {
+  constructor(creator: Creator)
+  use() {
+    p = creator.createProduct()
+    p.operate()
   }
 }
 ```
 
-## Conclusión
+## Conclusion
 
-Los patrones de diseño son herramientas conceptuales poderosas que, usadas con criterio, mejoran el diseño y la comunicación entre equipos. Aprenderlos implica estudiar su intención, cuándo aplicarlos y practicar implementaciones reales en el lenguaje objetivo.
+Design patterns are powerful conceptual tools that, used with judgment, improve the design and communication among teams. Learning them involves studying their intent, when to apply them, and practicing real implementations in the target language.
 
 ---

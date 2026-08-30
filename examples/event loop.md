@@ -1,72 +1,72 @@
 # Event Loop
 
-Un **event loop** (bucle de eventos) es el mecanismo que permite a un programa ejecutar operaciones asincrónicas usando un solo hilo. Es un bucle infinito que hace dos cosas: revisa si hay trabajo pendiente (callbacks, tareas completadas) y lo ejecuta; si no hay nada listo, **espera** hasta que algo ocurra (un timeout, una respuesta de red, un archivo leído).
+An **event loop** is the mechanism that allows a program to run asynchronous operations using a single thread. It is an infinite loop that does two things: it checks if there is pending work (callbacks, completed tasks) and executes it; if nothing is ready, it **waits** until something happens (a timeout, a network response, a file being read).
 
-La clave está en que las operaciones lentas (red, disco, timers) no bloquean el hilo: se delegan al entorno y su callback queda en cola hasta que estén listas. Mientras tanto, el event loop sigue procesando otras tareas. A esto se le llama **multitarea cooperativa**: cada tarea cede el control voluntariamente cuando llega a una operación que requiere espera.
+The key is that slow operations (network, disk, timers) do not block the thread: they are delegated to the environment and their callback is queued until they are ready. Meanwhile, the event loop keeps processing other tasks. This is called **cooperative multitasking**: each task voluntarily yields control when it reaches an operation that requires waiting.
 
-## Componentes principales (caso JavaScript)
+## Main components (JavaScript case)
 
-JavaScript es **single-threaded**, pero puede manejar operaciones asincrónicas gracias al event loop del runtime (navegador o Node.js).
+JavaScript is **single-threaded**, but it can handle asynchronous operations thanks to the runtime's event loop (browser or Node.js).
 
-### Call Stack (Pila de ejecución)
+### Call Stack (Execution stack)
 
-Es donde se ejecutan las funciones. Funciona bajo el principio **LIFO** (Last In, First Out).
+This is where functions are executed. It works under the **LIFO** principle (Last In, First Out).
 
 ```javascript
-function saludar() {
-  console.log("Hola");
+function greet() {
+  console.log("Hello");
 }
 
-function despedir() {
-  saludar();
-  console.log("Adiós");
+function sayGoodbye() {
+  greet();
+  console.log("Goodbye");
 }
 
-despedir();
+sayGoodbye();
 // Call Stack:
-// 1. despedir() entra
-// 2. saludar() entra
-// 3. console.log("Hola") entra y sale
-// 4. saludar() sale
-// 5. console.log("Adiós") entra y sale
-// 6. despedir() sale
+// 1. sayGoodbye() enters
+// 2. greet() enters
+// 3. console.log("Hello") enters and leaves
+// 4. greet() leaves
+// 5. console.log("Goodbye") enters and leaves
+// 6. sayGoodbye() leaves
 ```
 
-### Web APIs / APIs del entorno
+### Web APIs / Environment APIs
 
-El runtime provee APIs que operan fuera del call stack, como `setTimeout`, `fetch`, `DOM events`, etc.
+The runtime provides APIs that operate outside the call stack, such as `setTimeout`, `fetch`, `DOM events`, etc.
 
-### Callback Queue (Cola de callbacks)
+### Callback Queue
 
-Cuando una API asincrónica termina, su callback se coloca aquí esperando ser ejecutado.
+When an asynchronous API finishes, its callback is placed here waiting to be executed.
 
-### Microtask Queue (Cola de microtareas)
+### Microtask Queue
 
-Tiene prioridad sobre el callback queue. Aquí se colocan las promesas (`Promise.then`) y `queueMicrotask`.
+It has priority over the callback queue. Promises (`Promise.then`) and `queueMicrotask` are placed here.
 
 ---
 
-## ¿Cómo funciona en JavaScript?
+## How it works in JavaScript
 
-1. Ejecuta todo lo que haya en el **Call Stack**.
-2. Si el Call Stack está vacío, revisa la **Microtask Queue** y ejecuta todas las tareas.
-3. Si la Microtask Queue está vacía, revisa la **Callback Queue** y ejecuta una tarea.
-4. Repite.
+1. It executes everything in the **Call Stack**.
+2. If the Call Stack is empty, it checks the **Microtask Queue** and runs all its tasks.
+3. If the Microtask Queue is empty, it checks the **Callback Queue** and runs one task.
+4. Repeat.
 
 ```javascript
-console.log("1");              // Sincrónico — se ejecuta primero
+console.log("1");              // Synchronous — runs first
 
 setTimeout(() => {
-  console.log("2");            // Callback queue — se ejecuta al final
+  console.log("2");            // Callback queue — runs last
 }, 0);
 
 Promise.resolve().then(() => {
-  console.log("3");            // Microtask queue — se ejecuta antes del callback
+  console.log("3");            // Microtask queue — runs before the callback
 });
 
-console.log("4");              // Sincrónico — se ejecuta después del 1
+console.log("4");              // Synchronous — runs after the 1
 
-// Salida:
+// Output:
 // 1
 // 4
 // 3
@@ -75,151 +75,151 @@ console.log("4");              // Sincrónico — se ejecuta después del 1
 
 ---
 
-## ¿Cómo funciona en Python?
+## How it works in Python
 
-Python sí tiene hilos reales (`threading`), pero desde Python 3.4 incluye **`asyncio`**: una librería estándar que implementa un event loop de un solo hilo, similar en espíritu al de JavaScript.
+Python does have real threads (`threading`), but since Python 3.4 it includes **`asyncio`**: a standard library that implements a single-threaded event loop, similar in spirit to JavaScript's.
 
-Los ingredientes son:
+The ingredients are:
 
-- **Corrutinas**: funciones definidas con `async def`. No se ejecutan al llamarlas, devuelven un objeto coroutine.
-- **`await`**: el punto donde una corrutina cede el control al event loop ("espero esto, sigue con otra cosa").
-- **Tasks**: corrutinas envueltas para ser programadas en el loop (`asyncio.create_task`).
-- **El loop mismo**: iniciado con `asyncio.run()`. Internamente usa un *selector* del sistema operativo (`epoll` en Linux) para esperar eventos de I/O sin consumir CPU.
+- **Coroutines**: functions defined with `async def`. They do not run when called; they return a coroutine object.
+- **`await`**: the point where a coroutine yields control to the event loop ("I'm waiting for this, continue with something else").
+- **Tasks**: coroutines wrapped to be scheduled on the loop (`asyncio.create_task`).
+- **The loop itself**: started with `asyncio.run()`. Internally it uses an operating system *selector* (`epoll` on Linux) to wait for I/O events without consuming CPU.
 
-A diferencia de JavaScript, en Python no existe la microtask queue: todas las tareas listas viven en una sola cola y se atienden por orden de llegada.
+Unlike JavaScript, Python has no microtask queue: all ready tasks live in a single queue and are handled in arrival order.
 
-### Ejemplo básico: dos tareas concurrentes
+### Basic example: two concurrent tasks
 
 ```python
 import asyncio
 
-async def tarea(nombre, delay):
-    print(f"{nombre} inicio")
-    await asyncio.sleep(delay)   # cede el control al loop
-    print(f"{nombre} fin")
+async def task(name, delay):
+    print(f"{name} start")
+    await asyncio.sleep(delay)   # yields control to the loop
+    print(f"{name} end")
 
 async def main():
     await asyncio.gather(
-        tarea("A", 2),
-        tarea("B", 1),
+        task("A", 2),
+        task("B", 1),
     )
 
 asyncio.run(main())
 ```
 
 ```python
-# Salida:
-# A inicio
-# B inicio   ← B empieza mientras A espera
-# B fin      ← B termina primero (1s < 2s)
-# A fin
+# Output:
+# A start
+# B start   <- B starts while A waits
+# B end     <- B finishes first (1s < 2s)
+# A end
 ```
 
-Las dos tareas avanzan **intercaladas en el mismo hilo**: mientras A duerme, corre B. En total tardan ~2s, no ~3s.
+Both tasks advance **interleaved on the same thread**: while A sleeps, B runs. In total they take ~2s, not ~3s.
 
-### El equivalente a setTimeout(0)
+### The equivalent of setTimeout(0)
 
-`asyncio.create_task` programa la corrutina pero no la ejecuta todavía; hay que darle el control al loop:
+`asyncio.create_task` schedules the coroutine but does not run it yet; you have to give control back to the loop:
 
 ```python
 import asyncio
 
-async def tarde():
+async def later():
     print("2")
 
 async def main():
     print("1")
-    asyncio.create_task(tarde())  # queda en cola, como setTimeout
+    asyncio.create_task(later())  # stays queued, like setTimeout
     print("3")
-    await asyncio.sleep(0)        # cede el control una vez al loop
+    await asyncio.sleep(0)        # yields control to the loop once
 
 asyncio.run(main())
 
-# Salida:
+# Output:
 # 1
 # 3
 # 2
 ```
 
-Mismo comportamiento que en JavaScript: lo programado nunca corre antes de que el código sincrónico termine.
+Same behavior as in JavaScript: what is scheduled never runs before the synchronous code finishes.
 
-### Bloquear el loop es igual de grave
+### Blocking the loop is just as serious
 
-Si usas código bloqueante (`time.sleep`, requests sincrónicos, cálculos pesados), **todo el loop se congela**, igual que el call stack en JavaScript:
+If you use blocking code (`time.sleep`, synchronous requests, heavy computations), **the whole loop freezes**, just like the call stack in JavaScript:
 
 ```python
 import asyncio
 import time
 
-async def tarde():
-    print("tarde ejecutada")
+async def later():
+    print("later executed")
 
 async def main():
-    asyncio.create_task(tarde())
-    time.sleep(3)          # ¡bloquea TODO! "tarde" no corre hasta que termine
+    asyncio.create_task(later())
+    time.sleep(3)          # blocks EVERYTHING! "later" does not run until it finishes
 
 asyncio.run(main())
 
-# Salida (tras 3 segundos de espera):
-# tarde ejecutada
+# Output (after 3 seconds of waiting):
+# later executed
 ```
 
-La solución es usar las versiones no bloqueantes (`await asyncio.sleep(3)`) o delegar lo pesado a un hilo:
+The solution is to use the non-blocking versions (`await asyncio.sleep(3)`) or delegate heavy work to a thread:
 
 ```python
 import asyncio
 import time
 
 async def main():
-    await asyncio.to_thread(time.sleep, 3)  # el loop sigue vivo mientras espera
+    await asyncio.to_thread(time.sleep, 3)  # the loop stays alive while it waits
 ```
 
-La regla de oro: dentro de código `async`, usa siempre las versiones no bloqueantes (`asyncio.sleep`, `httpx`, `aiofiles`) o delega los bloques pesados con `asyncio.to_thread`.
+The golden rule: inside `async` code, always use the non-blocking versions (`asyncio.sleep`, `httpx`, `aiofiles`) or delegate heavy blocks with `asyncio.to_thread`.
 
 ---
 
-## Resumen
+## Summary
 
 <table>
   <thead>
     <tr>
-      <th>Concepto</th>
+      <th>Concept</th>
       <th>JavaScript</th>
       <th>Python (asyncio)</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Hilo</td>
-      <td>Uno solo</td>
-      <td>Uno solo para el loop (hilos aparte disponibles)</td>
+      <td>Thread</td>
+      <td>Only one</td>
+      <td>Only one for the loop (separate threads available)</td>
     </tr>
     <tr>
-      <td>Pausar una tarea</td>
-      <td><code>await promesa</code></td>
-      <td><code>await corrutina</code></td>
+      <td>Pause a task</td>
+      <td><code>await promise</code></td>
+      <td><code>await coroutine</code></td>
     </tr>
     <tr>
-      <td>Programar tarea</td>
+      <td>Schedule a task</td>
       <td><code>setTimeout</code>, <code>queueMicrotask</code></td>
       <td><code>asyncio.create_task</code></td>
     </tr>
     <tr>
-      <td>Ejecutar varias en paralelo</td>
+      <td>Run several in parallel</td>
       <td><code>Promise.all</code></td>
       <td><code>asyncio.gather</code></td>
     </tr>
     <tr>
-      <td>Colas de prioridad</td>
+      <td>Priority queues</td>
       <td>Microtask queue + callback queue</td>
-      <td>Una sola cola FIFO</td>
+      <td>A single FIFO queue</td>
     </tr>
     <tr>
-      <td>Sleep no bloqueante</td>
+      <td>Non-blocking sleep</td>
       <td><code>setTimeout(fn, ms)</code></td>
       <td><code>await asyncio.sleep(ms)</code></td>
     </tr>
   </tbody>
 </table>
 
-En ambos lenguajes la idea es la misma: un hilo, un bucle, tareas que ceden el control cuando esperan. La concurrencia viene del intercalado, no del paralelismo.
+In both languages the idea is the same: one thread, one loop, tasks that yield control when they wait. Concurrency comes from interleaving, not from parallelism.

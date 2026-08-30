@@ -1,43 +1,43 @@
 # Divide and Conquer
 
-Divide and conquer (divide y vencerás) es un paradigma algorítmico que resuelve un problema dividiéndolo en subproblemas más pequeños, resolviendo cada subproblema de forma recursiva y combinando las soluciones parciales para obtener la solución final. Es uno de los patrones más utilizados en algoritmos eficientes y aparece en muchas técnicas fundamentales como ordenación, búsqueda y multiplicación de matrices.
+Divide and conquer is an algorithmic paradigm that solves a problem by breaking it into smaller subproblems, solving each subproblem recursively, and combining the partial solutions to obtain the final solution. It is one of the most widely used patterns in efficient algorithms and appears in many fundamental techniques such as sorting, searching, and matrix multiplication.
 
-## Pasos generales
+## General steps
 
-1. Dividir: partir el problema en dos o más subproblemas de tamaño más pequeño.
-2. Conquistar: resolver cada subproblema de forma recursiva (si el subproblema es lo suficientemente pequeño, resolverlo directamente —caso base—).
-3. Combinar: unir las soluciones de los subproblemas para formar la solución del problema original.
+1. Divide: split the problem into two or more smaller subproblems.
+2. Conquer: solve each subproblem recursively (if the subproblem is small enough, solve it directly — the base case).
+3. Combine: merge the solutions of the subproblems to form the solution of the original problem.
 
-Este patrón puede representarse por la fórmula de recurrencia que describe el coste T(n) del algoritmo:
+This pattern can be represented by the recurrence formula that describes the cost T(n) of the algorithm:
 
 $$
 T(n) = a\,T\left(\frac{n}{b}\right) + f(n)
 $$
 
-donde:
+where:
 
-- $a$ es el número de subproblemas en que se divide el problema original,
-- $n/b$ es el tamaño de cada subproblema (en promedio),
-- $f(n)$ es el coste de dividir y combinar.
+- $a$ is the number of subproblems into which the original problem is divided,
+- $n/b$ is the size of each subproblem (on average),
+- $f(n)$ is the cost of dividing and combining.
 
-La familia de recurrencias anterior se puede analizar con el Teorema Maestro (Master Theorem) para obtener la complejidad asintótica.
+The family of recurrences above can be analyzed with the Master Theorem to obtain the asymptotic complexity.
 
-## Ejemplos clásicos
+## Classic examples
 
-- Merge Sort: divide el arreglo por la mitad ($a=2$, $b=2$), ordena recursivamente las mitades y combina con una fusión lineal; $T(n)=2T(n/2)+O(n) \Rightarrow O(n\log n)$.
-- Quick Sort: divide por una pivoteación (esperanza lineal) y combina por concatenación; su rendimiento depende del pivote elegido (promedio $O(n\log n)$, peor $O(n^2)$).
-- Binary Search: divide el problema de tamaño $n$ en un subproblema de tamaño $n/2$ ($a=1$, $b=2$) y no requiere combinación costosa; $T(n)=T(n/2)+O(1) \Rightarrow O(\log n)$.
-- Strassen (multiplicación de matrices): divide matrices en 4 bloques, realiza 7 multiplicaciones recursivas en lugar de 8, y combina los bloques; mejora el exponente de la multiplicación clásica.
+- Merge Sort: divides the array in half ($a=2$, $b=2$), recursively sorts the halves, and combines with a linear merge; $T(n)=2T(n/2)+O(n) \Rightarrow O(n\log n)$.
+- Quick Sort: divides by partitioning (linearly expected) and combines by concatenation; its performance depends on the chosen pivot (average $O(n\log n)$, worst $O(n^2)$).
+- Binary Search: divides a problem of size $n$ into one subproblem of size $n/2$ ($a=1$, $b=2$) and requires no costly combination; $T(n)=T(n/2)+O(1) \Rightarrow O(\log n)$.
+- Strassen (matrix multiplication): divides matrices into 4 blocks, performs 7 recursive multiplications instead of 8, and combines the blocks; it improves the exponent of classical multiplication.
 
-## Teorema Maestro (resumen)
+## Master Theorem (summary)
 
-Para recurrencias de la forma $T(n)=aT(n/b)+f(n)$, compare $f(n)$ con $n^{\log_b a}$:
+For recurrences of the form $T(n)=aT(n/b)+f(n)$, compare $f(n)$ with $n^{\log_b a}$:
 
-- Si $f(n)=O(n^{\log_b a - \epsilon})$ para algún $\epsilon>0$, entonces $T(n)=\Theta(n^{\log_b a})$.
-- Si $f(n)=\Theta(n^{\log_b a}\log^k n)$ para algún $k\ge 0$, entonces $T(n)=\Theta(n^{\log_b a}\log^{k+1} n)$.
-- Si $f(n)=\Omega(n^{\log_b a + \epsilon})$ y además $a\,f(n/b)\le c\,f(n)$ para alguna constante $c<1$ y $n$ suficientemente grande (condición regular), entonces $T(n)=\Theta(f(n))$.
+- If $f(n)=O(n^{\log_b a - \epsilon})$ for some $\epsilon>0$, then $T(n)=\Theta(n^{\log_b a})$.
+- If $f(n)=\Theta(n^{\log_b a}\log^k n)$ for some $k\ge 0$, then $T(n)=\Theta(n^{\log_b a}\log^{k+1} n)$.
+- If $f(n)=\Omega(n^{\log_b a + \epsilon})$ and also $a\,f(n/b)\le c\,f(n)$ for some constant $c<1$ and sufficiently large $n$ (regularity condition), then $T(n)=\Theta(f(n))$.
 
-## Pseudocódigo genérico
+## Generic pseudocode
 
 ```
 function divide_and_conquer(problem):
@@ -50,7 +50,7 @@ function divide_and_conquer(problem):
     return combine(results)
 ```
 
-## Ejemplo: Merge Sort (Python)
+## Example: Merge Sort (Python)
 
 ```python
 def merge_sort(arr):
@@ -71,36 +71,32 @@ def merge_sort(arr):
     return merged
 ```
 
-Complejidad: $T(n)=2T(n/2)+O(n) \Rightarrow O(n\log n)$.
+Complexity: $T(n)=2T(n/2)+O(n) \Rightarrow O(n\log n)$.
 
-## Ventajas y desventajas
+## Advantages and disadvantages
 
-Ventajas:
+Advantages:
 
-- Divide and conquer facilita el razonamiento recursivo y la programación modular.
-- Muchos algoritmos basados en este patrón son eficientes y aprovechan la paralelización natural (cada subproblema puede resolverse en paralelo).
-- Permite obtener algoritmos asintóticamente óptimos para problemas de ordenación, búsqueda y transformaciones.
+- Divide and conquer eases recursive reasoning and modular programming.
+- Many algorithms based on this pattern are efficient and take advantage of natural parallelization (each subproblem can be solved in parallel).
+- It yields asymptotically optimal algorithms for sorting, searching, and transformation problems.
 
-Desventajas:
+Disadvantages:
 
-- Overhead recursivo y coste de combinación pueden afectar el rendimiento constante en tamaños pequeños.
-- No todos los problemas se dividen en subproblemas independientes; en algunos casos la división genera dependencias complejas.
-- Para algunos algoritmos (p. ej. Quicksort en peor pivote), el balanceo entre subproblemas importa mucho y puede degradar el rendimiento.
+- Recursive overhead and combination cost can affect the constant performance on small sizes.
+- Not every problem splits into independent subproblems; in some cases the division creates complex dependencies.
+- For some algorithms (e.g., Quicksort with a bad pivot), the balance between subproblems matters a lot and can degrade performance.
 
-## Uso de la paralelización
+## Using parallelization
 
-Divide and conquer es especialmente apto para paralelismo porque subproblemas suelen ser independientes. Muchos frameworks y bibliotecas (OpenMP, multiprocessing, fork-join en Java, etc.) explotan este patrón para acelerar cómputos en máquinas con múltiples núcleos.
+Divide and conquer is especially suitable for parallelism because subproblems are usually independent. Many frameworks and libraries (OpenMP, multiprocessing, fork-join in Java, etc.) exploit this pattern to speed up computations on machines with multiple cores.
 
-## Consejos prácticos
+## Practical tips
 
-- Identificar correctamente el caso base (problemas lo bastante pequeños para resolver directamente).
-- Asegurarse de que la división produce subproblemas significativamente más pequeños para evitar recursiones costosas sin beneficio.
-- Medir y comparar con soluciones iterativas cuando el overhead recursivo y la memoria extra (p. ej. arrays temporales) sean problemáticos.
+- Correctly identify the base case (problems small enough to solve directly).
+- Make sure the division produces significantly smaller subproblems to avoid costly recurrences without benefit.
+- Measure and compare against iterative solutions when recursive overhead and extra memory (e.g., temporary arrays) are problematic.
 
-## Conclusión
+## Conclusion
 
-Divide and conquer es un paradigma esencial que subyace a muchos algoritmos eficientes. Comprender cómo dividir correctamente un problema, cómo combinar subsoluciones y cómo analizar la recurrencia (por ejemplo con el Teorema Maestro) es clave para diseñar soluciones eficaces y escalables.
-
----
-
-Si quieres, puedo: añadir ejemplos adicionales (Quicksort, Strassen), incluir un análisis con el Teorema Maestro paso a paso, o traducir el archivo al inglés.
+Divide and conquer is an essential paradigm underlying many efficient algorithms. Understanding how to correctly divide a problem, how to combine subsolutions, and how to analyze the recurrence (for example with the Master Theorem) is key to designing effective and scalable solutions.

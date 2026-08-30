@@ -1,42 +1,42 @@
-# O(n): Complejidad lineal
+# O(n): Linear Complexity
 
-La notación O grande, o Big O, describe el crecimiento del tiempo de ejecución de un algoritmo en función del tamaño de la entrada.
+Big O notation describes the growth of an algorithm's execution time as a function of the size of the input.
 
-## ¿Qué significa O(n)?
+## What does O(n) mean?
 
-O(n) significa que el tiempo de ejecución crece de forma lineal respecto a la cantidad de elementos que se procesan.
+O(n) means that the execution time grows linearly with respect to the number of elements being processed.
 
-Si la entrada tiene tamaño n, el algoritmo tarda aproximadamente n pasos en ejecutarse, en el peor caso.
+If the input has size n, the algorithm takes roughly n steps to run, in the worst case.
 
-## Ejemplo sencillo
+## Simple example
 
 ```javascript
-function recorrerLista(lista) {
-  for (const elemento of lista) {
-    console.log(elemento);
+function walkList(list) {
+  for (const element of list) {
+    console.log(element);
   }
 }
 ```
 
-Este algoritmo recorre cada elemento de la lista una vez. Si la lista tiene 10 elementos, hace 10 impresiones; si tiene 100 elementos, hace 100 impresiones.
+This algorithm visits every element of the list once. If the list has 10 elements, it makes 10 prints; if it has 100 elements, it makes 100 prints.
 
-Por eso se dice que su complejidad es O(n).
+That is why its complexity is said to be O(n).
 
-## Visualización
+## Visualization
 
 ```text
-Entrada: 1, 2, 3, 4, 5, ..., n
-Tiempo:  1, 2, 3, 4, 5, ..., n
+Input:  1, 2, 3, 4, 5, ..., n
+Time:   1, 2, 3, 4, 5, ..., n
 ```
 
-La relación entre la entrada y el tiempo es proporcional.
+The relationship between input and time is proportional.
 
-## Ejemplo con búsqueda
+## Example with search
 
 ```javascript
-function buscarElemento(lista, valor) {
-  for (const elemento of lista) {
-    if (elemento === valor) {
+function findElement(list, value) {
+  for (const element of list) {
+    if (element === value) {
       return true;
     }
   }
@@ -44,27 +44,27 @@ function buscarElemento(lista, valor) {
 }
 ```
 
-En el peor caso, puede que tengas que revisar todos los elementos de la lista. Por eso esta búsqueda lineal tiene complejidad O(n).
+In the worst case, you may have to check all the elements of the list. That is why this linear search has O(n) complexity.
 
-## ¿Cuándo es O(n)?
+## When is it O(n)?
 
-Un algoritmo es O(n) cuando:
+An algorithm is O(n) when:
 
-- recorre todos los elementos de una estructura
-- hace una sola pasada por la entrada
-- el número de operaciones crece proporcionalmente al tamaño de la entrada
+- it goes through all the elements of a structure
+- it makes a single pass over the input
+- the number of operations grows proportionally to the size of the input
 
-## Comparación con otros tiempos
+## Comparison with other complexities
 
-- O(1): tiempo constante
-- O(log n): crecimiento más lento
-- O(n): crecimiento lineal
-- O(n^2): crecimiento cuadrático
+- O(1): constant time
+- O(log n): slower growth
+- O(n): linear growth
+- O(n^2): quadratic growth
 
-## Importancia
+## Importance
 
-Entender O(n) ayuda a elegir algoritmos más eficientes, sobre todo cuando trabajas con grandes cantidades de datos.
+Understanding O(n) helps choose more efficient algorithms, especially when working with large amounts of data.
 
-## En resumen
+## In summary
 
-O(n) significa que el tiempo de ejecución aumenta de manera proporcional al tamaño de la entrada. Es una de las complejidades más comunes y se presenta cuando se recorren o revisan elementos uno por uno.
+O(n) means that the execution time increases proportionally to the size of the input. It is one of the most common complexities and appears when elements are visited or checked one by one.

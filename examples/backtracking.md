@@ -1,52 +1,52 @@
 # Backtracking
 
-El backtracking (retroceso) es una técnica algorítmica para resolver problemas de búsqueda y decisión construyendo soluciones incrementales y abandonando (retrocediendo) aquellas ramas que no cumplen las restricciones. Es una forma sistemática de recorrer el espacio de soluciones usando recursión y poda cuando un estado parcial no puede conducir a una solución válida.
+Backtracking is an algorithmic technique for solving search and decision problems by building solutions incrementally and abandoning (backtracking from) branches that do not satisfy the constraints. It is a systematic way of traversing the solution space using recursion and pruning whenever a partial state cannot lead to a valid solution.
 
-## Idea básica
+## Basic idea
 
-- Se construye una solución paso a paso; en cada paso se elige una opción (un candidato) para extender la solución parcial.
-- Tras añadir una opción, se comprueba si la solución parcial sigue siendo válida (cumple las restricciones). Si no lo es, se deshace la opción (backtrack) y se prueba la siguiente.
-- Si la solución parcial alcanza el estado final (completa), se registra como solución.
+- A solution is built step by step; at each step one option (a candidate) is chosen to extend the partial solution.
+- After adding an option, it is checked whether the partial solution is still valid (meets the constraints). If it is not, the option is undone (backtrack) and the next one is tried.
+- If the partial solution reaches the final state (complete), it is recorded as a solution.
 
-En esencia, backtracking es un DFS (depth-first search) sobre el árbol de decisiones, combinando generación de candidatos y comprobación de restricciones para podar ramas inútiles.
+In essence, backtracking is a DFS (depth-first search) over the decision tree, combining candidate generation and constraint checking to prune useless branches.
 
-## Estructura general (pseudocódigo)
+## General structure (pseudocode)
 
 ```pseudocode
-function backtrack(sol_parcial):
-    if sol_parcial es completa:
-        registrar(sol_parcial)
+function backtrack(partial_solution):
+    if partial_solution is complete:
+        record(partial_solution)
         return
-    for candidato in generar_candidatos(sol_parcial):
-        if valido(sol_parcial, candidato):
-            añadir(sol_parcial, candidato)
-            backtrack(sol_parcial)
-            quitar(sol_parcial, candidato)  // retroceder
+    for candidate in generate_candidates(partial_solution):
+        if valid(partial_solution, candidate):
+            add(partial_solution, candidate)
+            backtrack(partial_solution)
+            remove(partial_solution, candidate)  // backtrack
 ```
 
-## Ejemplos de problemas que usan backtracking
+## Examples of problems that use backtracking
 
-- Problema de las N reinas (N-Queens)
-- Generación de permutaciones y combinaciones
-- Sumas de subconjuntos (subset sum)
-- Coloreo de grafos con k colores
-- Sudoku y otros rompecabezas con restricciones
+- The N-Queens problem
+- Generating permutations and combinations
+- Subset sum
+- Graph coloring with k colors
+- Sudoku and other constraint-based puzzles
 
-## Complejidad
+## Complexity
 
-La complejidad depende del tamaño del espacio de búsqueda y de la eficacia de la poda. En el peor caso (sin poda) el tiempo puede ser exponencial en la profundidad de la solución. Sin embargo, la poda inteligente reduce drásticamente el trabajo en muchos casos prácticos.
+Complexity depends on the size of the search space and the effectiveness of pruning. In the worst case (without pruning) the time can be exponential in the depth of the solution. However, smart pruning drastically reduces the work in many practical cases.
 
-## Técnicas de poda y optimización
+## Pruning and optimization techniques
 
-- Validación temprana: comprobar restricciones tan pronto como sea posible para abandonar ramas pronto.
-- Orden heurístico: elegir primero candidatos más prometedores (p. ej. heurística MRV en CSPs).
-- Forward checking y propagación de restricciones: actualizar dominios de variables antes de recursar.
-- Backjumping y aprendizaje de conflictos: saltar varios niveles cuando se detecta un conflicto, o memorizar fallos.
-- Uso de estructuras eficientes para verificar restricciones (sets, bitmasks, tablas).
+- Early validation: check constraints as soon as possible to abandon branches early.
+- Heuristic ordering: choose the most promising candidates first (e.g., the MRV heuristic in CSPs).
+- Forward checking and constraint propagation: update variable domains before recursing.
+- Backjumping and conflict learning: skip several levels when a conflict is detected, or memorize failures.
+- Use of efficient structures to verify constraints (sets, bitmasks, tables).
 
-## Ejemplo didáctico en Python (generar permutaciones por backtracking)
+## Didactic example in Python (generating permutations with backtracking)
 
-El siguiente ejemplo genera todas las permutaciones de una lista usando un enfoque explícito de backtracking (sin usar itertools.permutations), para ilustrar la construcción incremental y el retroceso.
+The following example generates all permutations of a list using an explicit backtracking approach (without using `itertools.permutations`), to illustrate incremental construction and backtracking.
 
 ```python
 def permutations_backtrack(nums):
@@ -70,32 +70,31 @@ def permutations_backtrack(nums):
     backtrack([])
     return result
 
-# Uso
+# Usage
 print(permutations_backtrack(['a', 'b', 'c']))
 ```
 
-Explicación rápida del ejemplo:
+Quick explanation of the example:
 
-- `path` es la solución parcial; `used` evita reutilizar el mismo elemento.
-- En cada nivel se prueba elegir un elemento no usado, se recursa, y después se deshace la elección (`pop` y marcar `used[i] = False`).
+- `path` is the partial solution; `used` prevents reusing the same element.
+- At each level we try choosing an unused element, recurse, and then undo the choice (`pop` and setting `used[i] = False`).
 
-## Buenas prácticas
+## Best practices
 
-- Diseñar una verificación de validez eficiente para cortar ramas pronto.
-- Aplicar heurísticas cuando el espacio de búsqueda es grande.
-- Evitar copiar estructuras completas en cada llamada; usar modificaciones in-place y revertirlas al retroceder.
-- Si el problema admite, combinar backtracking con programación dinámica o memoización para evitar repetir subproblemas.
+- Design an efficient validity check to cut branches early.
+- Apply heuristics when the search space is large.
+- Avoid copying complete structures on every call; use in-place modifications and revert them when backtracking.
+- If the problem allows it, combine backtracking with dynamic programming or memoization to avoid repeating subproblems.
 
-## Conclusión
+## Conclusion
 
-El backtracking es una técnica flexible y poderosa para problemas combinatorios con restricciones. Su éxito práctico depende de la capacidad para podar eficazmente el árbol de búsqueda y de aplicar heurísticas que prioricen decisiones prometedoras.
+Backtracking is a flexible and powerful technique for combinatorial problems with constraints. Its practical success depends on the ability to prune the search tree effectively and to apply heuristics that prioritize promising decisions.
 
 ---
 
+## Complete example: N-Queens (Python)
 
-## Ejemplo completo: N-Queens (Python)
-
-El problema de las N reinas consiste en colocar N reinas en un tablero N×N de forma que ninguna ataque a otra. Es un clásico problema resuelto eficientemente con backtracking y poda usando estructuras auxiliares para detectar conflictos.
+The N-Queens problem consists of placing N queens on an N×N board so that none attacks another. It is a classic problem solved efficiently with backtracking and pruning using auxiliary structures to detect conflicts.
 
 ```python
 def solve_n_queens(n):
@@ -107,7 +106,7 @@ def solve_n_queens(n):
 
     def backtrack(r):
         if r == n:
-            # Construir representación legible
+            # Build a readable representation
             sol = []
             for c in board:
                 row = ['.'] * n
@@ -118,35 +117,35 @@ def solve_n_queens(n):
         for c in range(n):
             if c in cols or (r - c) in diag1 or (r + c) in diag2:
                 continue
-            # elegir
+            # choose
             board[r] = c
             cols.add(c); diag1.add(r - c); diag2.add(r + c)
             backtrack(r + 1)
-            # deshacer (retroceder)
+            # undo (backtrack)
             board[r] = -1
             cols.remove(c); diag1.remove(r - c); diag2.remove(r + c)
 
     backtrack(0)
     return solutions
 
-# Ejemplo de uso: imprimir soluciones para N=4
+# Example usage: print solutions for N=4
 if __name__ == '__main__':
     sols = solve_n_queens(4)
-    print(f"Encontradas {len(sols)} soluciones para N=4")
+    print(f"Found {len(sols)} solutions for N=4")
     for s in sols:
         print('\n'.join(s))
         print()
 ```
 
-Explicación:
+Explanation:
 
-- `cols`, `diag1` y `diag2` permiten comprobar en O(1) si colocar una reina en `(r,c)` genera conflicto.
-- `board` almacena la columna de la reina en cada fila y se actualiza in-place; al retroceder se restaura.
-- La poda evita explorar configuraciones que ya violan restricciones.
+- `cols`, `diag1`, and `diag2` allow checking in O(1) whether placing a queen at `(r,c)` creates a conflict.
+- `board` stores the column of the queen in each row and is updated in-place; it is restored when backtracking.
+- Pruning avoids exploring configurations that already violate constraints.
 
-## Diagrama del árbol de decisiones (Mermaid)
+## Decision tree diagram (Mermaid)
 
-El diagrama siguiente muestra un fragmento del árbol de decisiones para `N=4`. Cada nivel corresponde a una fila y las ramas a las columnas posibles; las ramas tachadas representarían colocaciones rechazadas por conflicto.
+The following diagram shows a fragment of the decision tree for `N=4`. Each level corresponds to a row and the branches to the possible columns; the crossed-out branches would represent placements rejected because of a conflict.
 
 ```mermaid
 graph TD
@@ -177,7 +176,7 @@ graph TD
   R3 --> R3C3[Col 3]
 ```
 
-Notas:
+Notes:
 
-- El diagrama es un esquema simplificado y no muestra las podas explícitas (ramas que se descartan por conflicto), pero ilustra la estructura en capas del árbol de decisiones.
-- En implementaciones reales la poda reduce mucho el tamaño efectivo del árbol.
+- The diagram is a simplified sketch and does not show the explicit prunes (branches discarded due to conflict), but it illustrates the layered structure of the decision tree.
+- In real implementations, pruning reduces the effective size of the tree a lot.

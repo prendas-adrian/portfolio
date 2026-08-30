@@ -1,18 +1,18 @@
 # Prism test
 
-Este README sirve para probar que Prism resalta cada lenguaje instalado.
+This README is used to test that Prism highlights each installed language.
 
 ## HTML
 
 ```html
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Hola</title>
+    <title>Hello</title>
   </head>
   <body>
-    <button class="btn">Enviar</button>
+    <button class="btn">Send</button>
   </body>
 </html>
 ```
@@ -35,9 +35,9 @@ body {
 ## JavaScript
 
 ```javascript
-const sumar = (a, b) => a + b;
+const add = (a, b) => a + b;
 
-console.log(sumar(2, 3));
+console.log(add(2, 3));
 
 for (let i = 0; i < 3; i++) {
   console.log(i);
@@ -77,7 +77,7 @@ print(fibonacci(10))
 ```bash
 #!/bin/bash
 name="Ana"
-echo "Hola $name"
+echo "Hello $name"
 ls -la
 ```
 
@@ -119,7 +119,7 @@ public class Main {
 #include <stdio.h>
 
 int main(void) {
-    printf("Hola desde C\\n");
+    printf("Hello from C\\n");
     return 0;
 }
 ```
@@ -131,7 +131,7 @@ int main(void) {
 using namespace std;
 
 int main() {
-    cout << "Hola desde C++" << endl;
+    cout << "Hello from C++" << endl;
     return 0;
 }
 ```
@@ -143,7 +143,7 @@ using System;
 
 class Program {
     static void Main() {
-        Console.WriteLine("Hola desde C#");
+        Console.WriteLine("Hello from C#");
     }
 }
 ```
@@ -152,18 +152,18 @@ class Program {
 
 ```php
 <?php
-$mensaje = "Hola desde PHP";
-echo $mensaje;
+$message = "Hello from PHP";
+echo $message;
 ```
 
 ## Ruby
 
 ```ruby
-def saludo(nombre)
-  "Hola, #{nombre}!"
+def greet(name)
+  "Hello, #{name}!"
 end
 
-puts saludo("Ruby")
+puts greet("Ruby")
 ```
 
 ## Go
@@ -174,7 +174,7 @@ package main
 import "fmt"
 
 func main() {
-    fmt.Println("Hola desde Go")
+    fmt.Println("Hello from Go")
 }
 ```
 
@@ -182,15 +182,15 @@ func main() {
 
 ```rust
 fn main() {
-    println!("Hola desde Rust");
+    println!("Hello from Rust");
 }
 ```
 
 ## Swift
 
 ```swift
-let mensaje = "Hola desde Swift"
-print(mensaje)
+let message = "Hello from Swift"
+print(message)
 ```
 
 ## YAML
@@ -205,13 +205,13 @@ scripts:
 ## Markdown
 
 ````markdown
-# Titulo
+# Title
 
 - item 1
 - item 2
 
 ```javascript
-console.log('hola');
+console.log('hello');
 ```
 ````
 
@@ -241,18 +241,18 @@ fun main() {
 use strict;
 use warnings;
 
-my @nombres = ("Ana", "Luis", "Maria");
+my @names = ("Ana", "Luis", "Maria");
 
-foreach my $nombre (@nombres) {
-    print "Hola, $nombre\n";
+foreach my $name (@names) {
+    print "Hello, $name\n";
 }
 
-sub cuadrado {
+sub square {
     my ($x) = @_;
     return $x * $x;
 }
 
-print "5^2 = " . cuadrado(5) . "\n";
+print "5^2 = " . square(5) . "\n";
 ```
 
 ## Scala
@@ -265,28 +265,28 @@ object Main extends App {
     case _ => fibonacci(n - 1) + fibonacci(n - 2)
   }
 
-  val numeros = List(1, 2, 3, 4, 5)
-  val cuadrados = numeros.map(x => x * x)
+  val numbers = List(1, 2, 3, 4, 5)
+  val squares = numbers.map(x => x * x)
 
   println(s"Fibonacci(10) = ${fibonacci(10)}")
-  println(s"Cuadrados: $cuadrados")
+  println(s"Squares: $squares")
 }
 ```
 
 ## CoffeeScript
 
 ```coffeescript
-sumar = (a, b) -> a + b
+add = (a, b) -> a + b
 
-restar = (a, b) ->
+subtract = (a, b) ->
   a - b
 
-console.log sumar(3, 4)
-console.log restar(10, 2)
+console.log add(3, 4)
+console.log subtract(10, 2)
 
-nombres = ["Ana", "Luis", "Maria"]
-for nombre in nombres
-  console.log "Hola, #{nombre}"
+names = ["Ana", "Luis", "Maria"]
+for name in names
+  console.log "Hello, #{name}"
 ```
 
 ## Docker
@@ -308,23 +308,23 @@ CMD ["node", "index.js"]
 ## Prolog
 
 ```prolog
-% Definir hechos
-padre(juan, maria).
-padre(juan, pedro).
-madre(ana, maria).
-madre(ana, pedro).
+% Define facts
+father(juan, maria).
+father(juan, pedro).
+mother(ana, maria).
+mother(ana, pedro).
 
-% Reglas
-hijo(X, Y) :- padre(Y, X).
-hijo(X, Y) :- madre(Y, X).
-hermano(X, Y) :- padre(Z, X), padre(Z, Y), X \\= Y.
+% Rules
+child(X, Y) :- father(Y, X).
+child(X, Y) :- mother(Y, X).
+sibling(X, Y) :- parent(Z, X), parent(Z, Y), X \\= Y.
 
-% Consultas
+% Queries
 :- initialization(main).
 
 main :-
-    findall(X, hijo(X, juan), Hijos),
-    write('Hijos de Juan: '), write(Hijos), nl,
+    findall(X, child(X, juan), Children),
+    write('Children of Juan: '), write(Children), nl,
     halt.
 ```
 
