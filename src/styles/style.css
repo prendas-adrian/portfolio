@@ -80,6 +80,7 @@ body{
 /* Blog: tablas (GFM) */
 #blog .blog-content table {
 	width: 100%;
+	table-layout: fixed;
 	border-collapse: collapse;
 	margin-bottom: 1.5em;
 	font-size: .95em;
@@ -89,6 +90,8 @@ body{
 	border: 1px solid #ddd;
 	padding: 8px 12px;
 	text-align: left;
+	overflow-wrap: anywhere;
+	word-break: normal;
 }
 #blog .blog-content thead th {
 	background: #fafafa;
