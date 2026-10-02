@@ -12,8 +12,8 @@ export const personalInfo = {
 export const socialLinks = [
   {
     name: "Email",
-    url: "mailto:prendas.adrian@proton.me?subject=Consulta&body=Hola,%20quisiera%20m%C3%A1s%20informaci%C3%B3n.",
-    display: "prendas.adrian@proton.me",
+    url: "mailto:prendas.adrian@gmail.com",
+    display: "prendas.adrian@gmail.com",
     label: "Email Address",
     icon: "/images/email.svg",
   },
@@ -188,7 +188,7 @@ export const skills = {
     { name: "MySql", width: "35%", color: "asbestos" },
   ],
   web: [
-    { name: "HTML/CSS", width: "80%", color: "emerald" },
+    { name: "HTML/CSS/JS", width: "80%", color: "emerald" },
     { name: "JAVA EE", width: "70%", color: "carrot" },
     { name: "MEAN Stack", width: "40%", color: "wisteria" },
     { name: "LAMP Stack", width: "60%", color: "sunflower" },
