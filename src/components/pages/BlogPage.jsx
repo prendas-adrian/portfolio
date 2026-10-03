@@ -1,5 +1,7 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
 import PrismCode from "../PrismCode";
 
 function BlogPage({ blogs }) {
@@ -42,7 +44,10 @@ function BlogPage({ blogs }) {
                 </a>
                 {expandedBlog === blog.id && (
                   <div className="blog-content">
-                    <ReactMarkdown components={components}>
+                    <ReactMarkdown
+                      components={components}
+                      rehypePlugins={[rehypeRaw, rehypeSanitize]}
+                    >
                       {blog.content}
                     </ReactMarkdown>
                   </div>
